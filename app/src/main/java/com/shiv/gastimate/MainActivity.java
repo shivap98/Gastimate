@@ -4,10 +4,13 @@ package com.shiv.gastimate;
  * Created by Shiv Paul on 6/25/2018.
  */
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 
@@ -33,5 +36,20 @@ public class MainActivity extends AppCompatActivity
         vehiclesList.setLayoutManager(new LinearLayoutManager(this));
         vehicleListAdapter = new VehicleListAdapter(vehicles);
         vehiclesList.setAdapter(vehicleListAdapter);
+
+        vehicleListAdapter.setClickListener(new VehicleListAdapter.ItemClickListener()
+        {
+            @Override
+            public void onClick(View view){}
+
+            @Override
+            public void onItemClick(View view, String vehicleName, double mpg)
+            {
+                Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                intent.putExtra("vehicleName", vehicleName);
+                intent.putExtra("vehicleMpg", mpg);
+                startActivity(intent);
+            }
+        });
     }
 }
