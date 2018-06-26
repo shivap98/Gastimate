@@ -15,14 +15,14 @@ import java.util.ArrayList;
 
 public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    ArrayList<String> vehicles = new ArrayList<String>();
-    ArrayList<String> vehiclesBackup = new ArrayList<String>();
+    ArrayList<Vehicle> vehicles = new ArrayList<>();
+    ArrayList<Vehicle> vehiclesBackup = new ArrayList<>();
 
     /**
      * Constructor which sets the ArrayList
      * @param vehicles, ArrayList of the vehicles
      */
-    public VehicleListAdapter(ArrayList<String> vehicles)
+    public VehicleListAdapter(ArrayList<Vehicle> vehicles)
     {
         this.vehicles.addAll(vehicles);
         this.vehiclesBackup.addAll(vehicles);
@@ -34,8 +34,8 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      */
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-
         TextView mainText;
+
         public MyViewHolder(View view)
         {
             super(view);
@@ -64,7 +64,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
-        String vehicle = vehicles.get(position);
+        String vehicle = vehicles.get(position).name;
         MyViewHolder view = (MyViewHolder) holder;
 
         view.mainText.setText(vehicle);
