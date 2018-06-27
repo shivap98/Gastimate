@@ -12,8 +12,15 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.TextView;
 
+import static com.shiv.gastimate.Constants.FROM_LOCATION_REQUEST;
+import static com.shiv.gastimate.Constants.TO_LOCATION_REQUEST;
+
 public class LocationActivity extends AppCompatActivity
 {
+    TextView textView;
+    TextView fromLocation;
+    TextView toLocation;
+
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,7 +28,10 @@ public class LocationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_activity);
 
-        TextView textView = findViewById(R.id.carSummary);
+        textView = findViewById(R.id.carSummary);
+        fromLocation = findViewById(R.id.fromLocation);
+        toLocation = findViewById(R.id.toLocation);
+
         Intent intent = getIntent();
         double mpg = intent.getDoubleExtra("vehicleMpg", 0.0);
         textView.setText(String.format("Vehicle Name: %s \nVehicle MPG: %f", intent.getStringExtra("vehicleName"), mpg));
@@ -32,9 +42,9 @@ public class LocationActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(LocationActivity.this, SetLocationActivity.class);
-                intent.putExtra("locationType", 0); //0 if from, 1 if to
-                startActivity(intent);
+                Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
+                intent.putExtra("locationRequestType", FROM_LOCATION_REQUEST);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -44,10 +54,28 @@ public class LocationActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(LocationActivity.this, SetLocationActivity.class);
-                intent.putExtra("locationType", 1); //0 if from, 1 if to
-                startActivity(intent);
+                Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
+                intent.putExtra("locationRequestType", Constants.TO_LOCATION_REQUEST);
+                startActivityForResult(intent, 0);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        if((requestCode == 0) && (intent != null))
+        {
+            int locationRequestType = intent.getIntExtra("locationRequestType", FROM_LOCATION_REQUEST);
+            String line = intent.getStringExtra("locationLine");
+            if(locationRequestType == FROM_LOCATION_REQUEST)
+            {
+                fromLocation.setText(line);
+            }
+            else if(locationRequestType == TO_LOCATION_REQUEST)
+            {
+                toLocation.setText(line);
+            }
+        }
     }
 }

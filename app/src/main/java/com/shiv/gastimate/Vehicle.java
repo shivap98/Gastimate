@@ -15,10 +15,10 @@ public class Vehicle
     double mpg;      //miles per gallon
     double fuelCap;  //maximum gallons of fuel
 
-    int trackingGas;    //1 if tracking gas in this vehicle, 0 if not
+    int trackingGas;    //1 if tracking gas in this vehicle, 0 if not, see Constants.java
     double currGas;      //current gas
 
-    int type;   //0 if car, 1 if motorcycle, 2 if other
+    int type;   //0 if car, 1 if motorcycle, 2 if other, see Constants.java
 
     public Vehicle(String name, String make, String model, int year, double mpg, double fuelCap, int trackingGas, double currGas, int type)
     {

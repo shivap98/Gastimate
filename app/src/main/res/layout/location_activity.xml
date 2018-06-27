@@ -66,7 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/from" />
 
             <TextView
-                android:id="@+id/coordinatesFrom"
+                android:id="@+id/fromLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -125,7 +125,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/to" />
 
             <TextView
-                android:id="@+id/coordinatesTo"
+                android:id="@+id/toLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
