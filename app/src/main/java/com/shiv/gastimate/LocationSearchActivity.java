@@ -31,7 +31,6 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import static com.shiv.gastimate.Constants.FROM_LOCATION_REQUEST;
-import static com.shiv.gastimate.Constants.GEOCODE_API;
 import static com.shiv.gastimate.Constants.TO_LOCATION_REQUEST;
 
 public class LocationSearchActivity extends AppCompatActivity
@@ -102,8 +101,9 @@ public class LocationSearchActivity extends AppCompatActivity
     {
         String address = locationInput.getText().toString();
         address = address.replace(" ", "+");
+        String key = getResources().getString(R.string.geocode_api);
 
-        String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", address, GEOCODE_API);
+        String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", address, key);
 
         // Listener for response
         Response.Listener<String> responseListener = new Response.Listener<String>()

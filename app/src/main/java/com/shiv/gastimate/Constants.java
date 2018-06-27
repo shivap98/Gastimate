@@ -16,7 +16,4 @@ public class Constants
 
     public static final int TRACKING = 1;
     public static final int NOT_TRACKING = 0;
-
-    public static final String GEOCODE_API = "AIzaSyAMFb2kCDKh1zG1e-d1K43XxZXOmQQ65Ew";
-
 }
