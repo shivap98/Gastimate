@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LocationActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".LocationActivity">
 
     <TextView
         android:id="@+id/carSummary"
@@ -14,14 +14,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="Vehicle Summary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/fromCardView"
-        android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -29,8 +28,9 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/carSummary">
@@ -56,14 +56,37 @@
                 android:id="@+id/setLocationFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
+
+            <TextView
+                android:id="@+id/coordinatesFromText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Coordinates:"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setLocationFrom" />
+
+            <TextView
+                android:id="@+id/coordinatesFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Coordinates Unavailable"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coordinatesFromText"
+                app:layout_constraintTop_toBottomOf="@+id/fromLocation" />
 
             <TextView
                 android:id="@+id/fromLocation"
@@ -71,15 +94,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Coordinates"
+                android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationFrom"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/toCardView"
-        android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -87,8 +110,9 @@
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +121,31 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/coordinatesTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Coordinates Unavailable"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coordinatesToText"
+                app:layout_constraintTop_toBottomOf="@+id/toLocation" />
+
+            <TextView
+                android:id="@+id/coordinatesToText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Coordinates:"
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/setLocationTo" />
 
             <TextView
                 android:id="@+id/to"
@@ -115,12 +164,10 @@
                 android:id="@+id/setLocationTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
 
@@ -130,9 +177,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Coordinates"
+                android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationTo"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
+
 </android.support.constraint.ConstraintLayout>

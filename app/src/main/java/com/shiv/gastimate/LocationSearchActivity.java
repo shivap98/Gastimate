@@ -4,6 +4,7 @@ package com.shiv.gastimate;
  * Created by Shiv Paul on 6/25/2018.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,7 +39,10 @@ public class LocationSearchActivity extends AppCompatActivity
 {
     TextView locationSummary;
     EditText locationInput;
+
     String finalAddress;
+    LatLng latLng;
+
     View view;
     int locationRequestType;
 
@@ -108,6 +113,7 @@ public class LocationSearchActivity extends AppCompatActivity
         // Listener for response
         Response.Listener<String> responseListener = new Response.Listener<String>()
         {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onResponse(String response)
             {
@@ -116,14 +122,23 @@ public class LocationSearchActivity extends AppCompatActivity
                     JSONObject jsonResponse = new JSONObject(response);
                     JSONArray results = jsonResponse.getJSONArray("results");
                     finalAddress = results.getJSONObject(0).getString("formatted_address");
+                    JSONObject geometry = results.getJSONObject(0).getJSONObject("geometry");
+                    JSONObject location = geometry.getJSONObject("location");
+                    double lat = location.getDouble("lat");
+                    double lng = location.getDouble("lng");
+
+                    latLng = new LatLng(lat, lng);
+
                     finalAddress = finalAddress.replace(", ", "\n");
+
+                    finalAddress += String.format("\n%f, %f", lat, lng);
                     locationSummary.setText(finalAddress);
                     locationSummary.setVisibility(View.VISIBLE);
                     locationSet = true;
                 }
                 catch(Exception e)
                 {
-                    Log.e("Geocoding", "Parsing Error");
+                    Log.e("Geocoding", "Parsing Error: " + e.getMessage());
                     Toast.makeText(getBaseContext(), "Place does not exist", Toast.LENGTH_SHORT).show();
                     locationSummary.setVisibility(View.INVISIBLE);
                 }
@@ -166,6 +181,7 @@ public class LocationSearchActivity extends AppCompatActivity
         Intent returnIntent = new Intent();
         returnIntent.putExtra("locationLine", line);
         returnIntent.putExtra("locationRequestType", locationRequestType);
+        returnIntent.putExtra("latLng", latLng);
         setResult(0, returnIntent);
         finish();
     }
