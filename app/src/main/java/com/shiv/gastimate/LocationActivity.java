@@ -40,7 +40,7 @@ public class LocationActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         double mpg = intent.getDoubleExtra("vehicleMpg", 0.0);
-        textView.setText(String.format("Vehicle Name: %s \nVehicle MPG: %f", intent.getStringExtra("vehicleName"), mpg));
+        textView.setText(String.format("%s \nVehicle MPG: %f", intent.getStringExtra("vehicleName"), mpg));
 
         CardView fromCardView = findViewById(R.id.fromCardView);
         fromCardView.setOnClickListener(new View.OnClickListener()

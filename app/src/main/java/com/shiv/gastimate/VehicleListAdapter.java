@@ -5,17 +5,20 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static com.shiv.gastimate.Constants.MOTORCYCLE;
+import static com.shiv.gastimate.Constants.OTHER;
 
 public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
@@ -34,9 +37,6 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface ItemClickListener extends View.OnClickListener
     {
-//        @Override
-//        void onClick(View view);
-
         void onItemClick(View view, String vehicleName, double mpg);
     }
 
@@ -47,14 +47,22 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView vehicleName;
-        TextView mpg;
+        TextView carText;
+        TextView mpgText;
+        TextView capacityText;
+        ImageView imageView;
+        TextView mpgValue;
         CardView cardView;
 
         public MyViewHolder(View view)
         {
             super(view);
             vehicleName = view.findViewById(R.id.vehicleName);
-            mpg = view.findViewById(R.id.mpg);
+            carText = view.findViewById(R.id.carText);
+            mpgText = view.findViewById(R.id.mpgText);
+            capacityText = view.findViewById(R.id.capacityText);
+            imageView = view.findViewById(R.id.imageView);
+            mpgValue = view.findViewById(R.id.mpgValue);
             cardView = view.findViewById(R.id.cardView);
 
             cardView.setOnClickListener(this);
@@ -63,7 +71,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View view)
         {
-            itemClickListener.onItemClick(view, vehicleName.getText().toString(), Double.parseDouble(mpg.getText().toString()));
+            itemClickListener.onItemClick(view, vehicleName.getText().toString(), Double.parseDouble(mpgValue.getText().toString()));
         }
     }
 
@@ -88,12 +96,25 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
-        String vehicleName = vehicles.get(position).name;
-        double mpg = vehicles.get(position).mpg;
+        Vehicle vehicle = vehicles.get(position);
         MyViewHolder view = (MyViewHolder) holder;
 
-        view.vehicleName.setText(vehicleName);
-        view.mpg.setText(String.format("%f", mpg));
+        view.mpgValue.setVisibility(View.GONE);
+
+        view.vehicleName.setText(String.format("Name: %s", vehicle.name));
+        view.mpgText.setText(String.format("Miles per Gallon: %.2f mpg", vehicle.mpg));
+        view.capacityText.setText(String.format("Capacity: %.2f gal", vehicle.capacity));
+
+        if(vehicle.type == MOTORCYCLE)
+        {
+            view.imageView.setImageResource(R.drawable.ic_black_motorcycle);
+        }
+        else if(vehicle.type == OTHER)
+        {
+            view.imageView.setImageResource(R.drawable.ic_black_bus);
+        }
+
+        view.mpgValue.setText(String.format("%f", vehicle.mpg));
     }
 
     /**
