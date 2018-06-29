@@ -40,6 +40,7 @@ public class LocationSearchActivity extends AppCompatActivity
 {
     TextView locationSummary;
     EditText locationInput;
+    FloatingActionButton floatingActionButton;
 
     String finalAddress;
     LatLng latLng;
@@ -97,18 +98,25 @@ public class LocationSearchActivity extends AppCompatActivity
         });
 
         //TODO: If location searched then onBackPressed, otherwise search
-        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
-                onBackPressed();
+                if(locationSet)
+                {
+                    onBackPressed();
+                }
+                else
+                {
+                    onSearch();
+                }
             }
         });
     }
 
-    //Called when enter key is pressed to search for location
+    //Called by enter key in EditText or fab in search mode to search for location
     void onSearch()
     {
         String address = locationInput.getText().toString();
@@ -142,12 +150,15 @@ public class LocationSearchActivity extends AppCompatActivity
                     locationSummary.setText(finalAddress);
                     locationSummary.setVisibility(View.VISIBLE);
                     locationSet = true;
+                    setFABicon();
                 }
                 catch(Exception e)
                 {
                     Log.e("Geocoding", "Parsing Error: " + e.getMessage());
                     Toast.makeText(getBaseContext(), "Place does not exist", Toast.LENGTH_SHORT).show();
                     locationSummary.setVisibility(View.INVISIBLE);
+                    locationSet=false;
+                    setFABicon();
                 }
             }
         };
@@ -161,6 +172,8 @@ public class LocationSearchActivity extends AppCompatActivity
                 Log.e("Geocoding", "Connection Error");
                 Toast.makeText(getBaseContext(), "Geocoding Connection Error", Toast.LENGTH_SHORT).show();
                 locationSummary.setVisibility(View.INVISIBLE);
+                locationSet = false;
+                setFABicon();
             }
         };
 
@@ -192,6 +205,18 @@ public class LocationSearchActivity extends AppCompatActivity
         returnIntent.putExtra("latLng", latLng);
         setResult(0, returnIntent);
         finish();
+    }
+
+    void setFABicon()
+    {
+        if(locationSet)
+        {
+            floatingActionButton.setImageResource(R.drawable.ic_check);
+        }
+        else
+        {
+            floatingActionButton.setImageResource(R.drawable.ic_search);
+        }
     }
 
     //Override because have to set intent first
