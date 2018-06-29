@@ -26,6 +26,10 @@ public class LocationActivity extends AppCompatActivity
     TextView fromCoordinates;
     TextView toCoordinates;
 
+    /**
+     * Called when activity is created
+     * @param savedInstanceState, previous state if exists
+     */
     @SuppressLint("DefaultLocale")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,8 +44,18 @@ public class LocationActivity extends AppCompatActivity
         toCoordinates = findViewById(R.id.coordinatesTo);
 
         Intent intent = getIntent();
-        double mpg = intent.getDoubleExtra("vehicleMpg", 0.0);
-        textView.setText(String.format("%s \nVehicle MPG: %f", intent.getStringExtra("vehicleName"), mpg));
+        String name = intent.getStringExtra("vehicleNameText");
+        Vehicle vehicle = new Vehicle();
+        for(int i=0; i<MainActivity.vehicles.size(); i++)
+        {
+            if(MainActivity.vehicles.get(i).name.equals(name))
+            {
+                vehicle = MainActivity.vehicles.get(i);
+                break;
+            }
+        }
+
+        textView.setText(vehicle.toString());
 
         CardView fromCardView = findViewById(R.id.fromCardView);
         fromCardView.setOnClickListener(new View.OnClickListener()
@@ -68,6 +82,12 @@ public class LocationActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Called when location search activity is done
+     * @param requestCode, used to identify activity sending the info
+     * @param resultCode
+     * @param intent, contains the data from location search activity
+     */
     @SuppressLint("DefaultLocale")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
@@ -90,6 +110,7 @@ public class LocationActivity extends AppCompatActivity
         }
     }
 
+    //Overrides the toolbar back button
     @Override
     public boolean onSupportNavigateUp()
     {

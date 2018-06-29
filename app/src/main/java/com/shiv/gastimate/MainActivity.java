@@ -25,14 +25,19 @@ public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;
     VehicleListAdapter vehicleListAdapter;
+    public static ArrayList<Vehicle> vehicles;
 
+    /**
+     * Called when activity is created
+     * @param savedInstanceState, previous state if exists
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        vehicles = new ArrayList<>();
         vehicles.add(new Vehicle("Car 1", "Make 1", "Model 1", 2014, 1.1, 11.11, NOT_TRACKING, 0, CAR));
         vehicles.add(new Vehicle("Motorbike 1", "Make 2", "Model 2", 2015, 2.1, 21.11, NOT_TRACKING, 0, MOTORCYCLE));
         vehicles.add(new Vehicle("Other 1", "Make 3", "Model 3", 2016, 3.1, 31.11, 0, NOT_TRACKING, OTHER));
@@ -54,16 +59,16 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onItemClick(View view, String vehicleName, double mpg)
+            public void onItemClick(View view, String vehicleName)
             {
                 Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                intent.putExtra("vehicleName", vehicleName);
-                intent.putExtra("vehicleMpg", mpg);
+                intent.putExtra("vehicleNameText", vehicleName);
                 startActivity(intent);
             }
         });
     }
 
+    //Called when coming back here from location activity, scrolls back up
     @Override
     protected void onPostResume()
     {

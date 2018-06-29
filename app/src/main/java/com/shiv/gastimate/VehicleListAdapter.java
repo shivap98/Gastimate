@@ -36,7 +36,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public interface ItemClickListener extends View.OnClickListener
     {
-        void onItemClick(View view, String vehicleName, double mpg);
+        void onItemClick(View view, String vehicleName);
     }
 
     /**
@@ -45,23 +45,23 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      */
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        TextView vehicleName;
+        TextView vehicleNameText;
         TextView carText;
         TextView mpgText;
         TextView capacityText;
         ImageView imageView;
-        TextView mpgValue;
+        TextView vehicleName;
         CardView cardView;
 
         public MyViewHolder(View view)
         {
             super(view);
-            vehicleName = view.findViewById(R.id.vehicleName);
+            vehicleNameText = view.findViewById(R.id.vehicleNameText);
             carText = view.findViewById(R.id.carText);
             mpgText = view.findViewById(R.id.mpgText);
             capacityText = view.findViewById(R.id.capacityText);
             imageView = view.findViewById(R.id.imageView);
-            mpgValue = view.findViewById(R.id.mpgValue);
+            vehicleName = view.findViewById(R.id.vehicleName);
             cardView = view.findViewById(R.id.cardView);
 
             cardView.setOnClickListener(this);
@@ -70,7 +70,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View view)
         {
-            itemClickListener.onItemClick(view, vehicleName.getText().toString(), Double.parseDouble(mpgValue.getText().toString()));
+            itemClickListener.onItemClick(view, vehicleName.getText().toString());
         }
     }
 
@@ -98,9 +98,9 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Vehicle vehicle = vehicles.get(position);
         MyViewHolder view = (MyViewHolder) holder;
 
-        view.mpgValue.setVisibility(View.GONE);
+        view.vehicleName.setVisibility(View.GONE);
 
-        view.vehicleName.setText(String.format("Name: %s", vehicle.name));
+        view.vehicleNameText.setText(String.format("Name: %s", vehicle.name));
         view.mpgText.setText(String.format("Miles per Gallon: %.2f mpg", vehicle.mpg));
         view.capacityText.setText(String.format("Capacity: %.2f gal", vehicle.capacity));
 
@@ -113,7 +113,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             view.imageView.setImageResource(R.drawable.ic_bus);
         }
 
-        view.mpgValue.setText(String.format("%f", vehicle.mpg));
+        view.vehicleName.setText(vehicle.name);
     }
 
     /**

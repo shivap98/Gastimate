@@ -37,4 +37,22 @@ public class Vehicle
         this.currGas = currGas;
         this.type = type;
     }
+
+    public Vehicle() {}
+
+    @Override
+    public String toString()
+    {
+        return "Vehicle{" +
+                "name='" + name + '\'' +
+                ", make='" + make + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", mpg=" + mpg +
+                ", capacity=" + capacity +
+                ", trackingGas=" + trackingGas +
+                ", currGas=" + currGas +
+                ", type=" + type +
+                '}';
+    }
 }

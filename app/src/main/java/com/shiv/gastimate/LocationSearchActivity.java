@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,10 @@ public class LocationSearchActivity extends AppCompatActivity
 
     boolean locationSet = false;
 
+    /**
+     * Called when activity is created
+     * @param savedInstanceState, previous state if exists
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -102,11 +107,12 @@ public class LocationSearchActivity extends AppCompatActivity
         });
     }
 
+    //Called when enter key is pressed to search for location
     void onSearch()
     {
         String address = locationInput.getText().toString();
         address = address.replace(" ", "+");
-        String key = getResources().getString(R.string.geocode_api);
+        String key = getResources().getString(R.string.geocode_api_key);
 
         String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", address, key);
 
@@ -167,6 +173,7 @@ public class LocationSearchActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    //Sets the intent with the location information to be sent back
     void setLocation()
     {
         String line;
@@ -186,6 +193,7 @@ public class LocationSearchActivity extends AppCompatActivity
         finish();
     }
 
+    //Override because have to set intent first
     @Override
     public void onBackPressed()
     {
@@ -199,6 +207,7 @@ public class LocationSearchActivity extends AppCompatActivity
         }
     }
 
+    //Overrides the toolbar back button
     @Override
     public boolean onSupportNavigateUp()
     {
