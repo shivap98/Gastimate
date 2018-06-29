@@ -34,6 +34,8 @@
         android:layout_marginEnd="16dp"
         android:focusable="true"
         android:clickable="true"
+        android:src="@drawable/ic_check"
+        android:tint="@color/white"
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -5,7 +5,6 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -107,11 +106,11 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         if(vehicle.type == MOTORCYCLE)
         {
-            view.imageView.setImageResource(R.drawable.ic_black_motorcycle);
+            view.imageView.setImageResource(R.drawable.ic_motorcycle);
         }
         else if(vehicle.type == OTHER)
         {
-            view.imageView.setImageResource(R.drawable.ic_black_bus);
+            view.imageView.setImageResource(R.drawable.ic_bus);
         }
 
         view.mpgValue.setText(String.format("%f", vehicle.mpg));

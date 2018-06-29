@@ -200,15 +200,9 @@ public class LocationSearchActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public boolean onSupportNavigateUp()
     {
-        switch(item.getItemId())
-        {
-            case android.R.id.home:
-            {
-                onBackPressed();
-            }
-        }
+        onBackPressed();
         return true;
     }
 }

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -35,7 +36,10 @@ public class MainActivity extends AppCompatActivity
         vehicles.add(new Vehicle("Car 1", "Make 1", "Model 1", 2014, 1.1, 11.11, NOT_TRACKING, 0, CAR));
         vehicles.add(new Vehicle("Motorbike 1", "Make 2", "Model 2", 2015, 2.1, 21.11, NOT_TRACKING, 0, MOTORCYCLE));
         vehicles.add(new Vehicle("Other 1", "Make 3", "Model 3", 2016, 3.1, 31.11, 0, NOT_TRACKING, OTHER));
-        vehicles.add(new Vehicle("Car 2", "Make 3", "Model 4", 2017, 4.1, 41.11, 0, NOT_TRACKING, CAR));
+        vehicles.add(new Vehicle("Car 2", "Make 4", "Model 4", 2017, 4.1, 41.11, 0, NOT_TRACKING, CAR));
+        vehicles.add(new Vehicle("Car 3", "Make 5", "Model 5", 2018, 5.1, 51.11, 0, NOT_TRACKING, CAR));
+        vehicles.add(new Vehicle("Car 4", "Make 6", "Model 6", 2019, 6.1, 61.11, 0, NOT_TRACKING, CAR));
+        vehicles.add(new Vehicle("Car 5", "Make 7", "Model 7", 2020, 7.1, 71.11, 0, NOT_TRACKING, CAR));
 
         vehiclesList = findViewById(R.id.vehiclesList);
         vehiclesList.setLayoutManager(new LinearLayoutManager(this));
@@ -58,5 +62,12 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onPostResume()
+    {
+        super.onPostResume();
+        vehiclesList.scrollToPosition(0);
     }
 }

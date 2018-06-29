@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.transition.Fade;
 import android.view.View;
 import android.widget.TextView;
 
@@ -87,5 +88,12 @@ public class LocationActivity extends AppCompatActivity
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp()
+    {
+        onBackPressed();
+        return true;
     }
 }
