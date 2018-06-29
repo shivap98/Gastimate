@@ -96,6 +96,7 @@ public class LocationSearchActivity extends AppCompatActivity
             }
         });
 
+        //TODO: If location searched then onBackPressed, otherwise search
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
         {

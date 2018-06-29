@@ -6,6 +6,7 @@ package com.shiv.gastimate;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -44,7 +45,7 @@ public class LocationActivity extends AppCompatActivity
         toCoordinates = findViewById(R.id.coordinatesTo);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("vehicleNameText");
+        final String name = intent.getStringExtra("vehicleNameText");
         Vehicle vehicle = new Vehicle();
         for(int i=0; i<MainActivity.vehicles.size(); i++)
         {
@@ -78,6 +79,18 @@ public class LocationActivity extends AppCompatActivity
                 Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
                 intent.putExtra("locationRequestType", Constants.TO_LOCATION_REQUEST);
                 startActivityForResult(intent, 0);
+            }
+        });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(LocationActivity.this, FuelActivity.class);
+                intent.putExtra("vehicleNameText", name);
+                startActivity(intent);
             }
         });
     }

@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shiv.gastimate">
 
+    <permission
+        android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,28 +16,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".LocationActivity"
-            android:parentActivityName=".MainActivity"/>
-
+        <activity
+            android:name=".LocationActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".LocationSearchActivity"
-            android:parentActivityName=".LocationSearchActivity"/>
+            android:parentActivityName=".LocationSearchActivity" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAMFb2kCDKh1zG1e-d1K43XxZXOmQQ65Ew"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAMFb2kCDKh1zG1e-d1K43XxZXOmQQ65Ew" />
+
+        <activity android:name=".FuelActivity"
+            android:parentActivityName=".LocationActivity">
+        </activity>
     </application>
 
-    <permission
-        android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.google.maps.android.utils.permission.MAPS_RECEIVE"/>
-
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
