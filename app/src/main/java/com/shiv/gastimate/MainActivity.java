@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;
     VehicleListAdapter vehicleListAdapter;
-    public static ArrayList<Vehicle> vehicles;
+    ArrayList<Vehicle> vehicles;
+
+    public static Vehicle currentVehicle;
 
     /**
      * Called when activity is created
@@ -62,7 +64,14 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(View view, String vehicleName)
             {
                 Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                intent.putExtra("vehicleNameText", vehicleName);
+                for(Vehicle vehicle : vehicles)
+                {
+                    if(vehicle.name.equals(vehicleName))
+                    {
+                        currentVehicle = vehicle;
+                        break;
+                    }
+                }
                 startActivity(intent);
             }
         });

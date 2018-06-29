@@ -44,18 +44,7 @@ public class LocationActivity extends AppCompatActivity
         fromCoordinates = findViewById(R.id.coordinatesFrom);
         toCoordinates = findViewById(R.id.coordinatesTo);
 
-        Intent intent = getIntent();
-        final String name = intent.getStringExtra("vehicleNameText");
-        Vehicle vehicle = new Vehicle();
-        for(int i=0; i<MainActivity.vehicles.size(); i++)
-        {
-            if(MainActivity.vehicles.get(i).name.equals(name))
-            {
-                vehicle = MainActivity.vehicles.get(i);
-                break;
-            }
-        }
-
+        Vehicle vehicle = MainActivity.currentVehicle;
         textView.setText(vehicle.toString());
 
         CardView fromCardView = findViewById(R.id.fromCardView);
@@ -89,7 +78,6 @@ public class LocationActivity extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(LocationActivity.this, FuelActivity.class);
-                intent.putExtra("vehicleNameText", name);
                 startActivity(intent);
             }
         });

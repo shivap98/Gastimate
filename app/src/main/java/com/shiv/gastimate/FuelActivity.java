@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FuelActivity extends AppCompatActivity
 {
@@ -17,6 +18,8 @@ public class FuelActivity extends AppCompatActivity
     Button setPriceButton;
     TextView currentSetPriceText;
     EditText priceInput;
+    TextView customFuelPriceText;
+    TextView textView;
 
     double currentSetPrice;
 
@@ -30,11 +33,16 @@ public class FuelActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fuel_activity);
 
-        Switch customFuelSwitch = findViewById(R.id.customFuelSwitch);
+        final Switch customFuelSwitch = findViewById(R.id.customFuelSwitch);
         textInputLayout = findViewById(R.id.textInputLayout);
         setPriceButton = findViewById(R.id.setPriceButton);
         currentSetPriceText = findViewById(R.id.currentSetPrice);
         priceInput = findViewById(R.id.priceInput);
+        customFuelPriceText = findViewById(R.id.customFuelPriceText);
+        textView = findViewById(R.id.textView);
+
+        Vehicle vehicle = MainActivity.currentVehicle;
+        textView.setText(vehicle.toString());
 
         customFuelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -55,23 +63,41 @@ public class FuelActivity extends AppCompatActivity
             }
         });
 
+        customFuelPriceText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                customFuelSwitch.toggle();
+            }
+        });
+
         setPriceButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                setPriceText();
+                try
+                {
+                    setPriceText();
+                }catch(Exception e) {}
             }
         });
     }
 
+    //Called when set price button is checked
     @SuppressLint("DefaultLocale")
     void setPriceText()
     {
         currentSetPrice = Double.parseDouble(priceInput.getText().toString());
-        if(currentSetPrice < 100.00)
+        if(currentSetPrice <= 100.00)
         {
             currentSetPriceText.setText(String.format("%2.2f", currentSetPrice));
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Price can't be more than 100 USD!", Toast.LENGTH_SHORT).show();
+            priceInput.setText("");
         }
     }
 
