@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.transition.Fade;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 
 import static com.shiv.gastimate.Constants.FROM_LOCATION_REQUEST;
 import static com.shiv.gastimate.Constants.TO_LOCATION_REQUEST;
@@ -26,6 +28,8 @@ public class LocationActivity extends AppCompatActivity
     TextView toLocation;
     TextView fromCoordinates;
     TextView toCoordinates;
+    ImageView fromImageView;
+    ImageView toImageView;
 
     /**
      * Called when activity is created
@@ -43,6 +47,8 @@ public class LocationActivity extends AppCompatActivity
         toLocation = findViewById(R.id.toLocation);
         fromCoordinates = findViewById(R.id.coordinatesFrom);
         toCoordinates = findViewById(R.id.coordinatesTo);
+        fromImageView= findViewById(R.id.fromImageView);
+        toImageView = findViewById(R.id.toImageView);
 
         Vehicle vehicle = MainActivity.currentVehicle;
         textView.setText(vehicle.toString());
@@ -51,7 +57,7 @@ public class LocationActivity extends AppCompatActivity
         fromCardView.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
+            public void onClick(View view)
             {
                 Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
                 intent.putExtra("locationRequestType", FROM_LOCATION_REQUEST);
@@ -102,11 +108,22 @@ public class LocationActivity extends AppCompatActivity
             {
                 fromLocation.setText(line);
                 fromCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
+                Picasso.get()
+                        .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
+                        .error(R.drawable.ic_location)
+                        .fit()
+                        .into(fromImageView);
+
             }
             else if(locationRequestType == TO_LOCATION_REQUEST)
             {
                 toLocation.setText(line);
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
+                Picasso.get()
+                        .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
+                        .error(R.drawable.ic_location)
+                        .fit()
+                        .into(toImageView);
             }
         }
     }

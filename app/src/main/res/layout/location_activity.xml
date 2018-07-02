@@ -40,6 +40,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/fromImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_location" />
+
             <TextView
                 android:id="@+id/from"
                 android:layout_width="wrap_content"
@@ -50,7 +62,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fromImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -58,10 +70,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fromImageView"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
 
             <TextView
@@ -74,8 +86,9 @@
                 android:text="Coordinates:"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setLocationFrom" />
+                app:layout_constraintStart_toEndOf="@+id/fromImageView"
+                app:layout_constraintTop_toBottomOf="@+id/setLocationFrom"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/coordinatesFrom"
@@ -94,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationFrom"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
@@ -123,6 +136,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/toImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_location" />
+
             <TextView
                 android:id="@+id/coordinatesTo"
                 android:layout_width="wrap_content"
@@ -145,8 +170,9 @@
                 android:text="Coordinates:"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/setLocationTo" />
+                app:layout_constraintStart_toEndOf="@+id/toImageView"
+                app:layout_constraintTop_toBottomOf="@+id/setLocationTo"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/to"
@@ -158,7 +184,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -166,10 +192,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toImageView"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
 
             <TextView
@@ -177,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationTo"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
