@@ -37,7 +37,7 @@
                 android:text="Name: Name"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Miles Per Gallon: "
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
                 app:layout_constraintTop_toBottomOf="@+id/carText" />
 
             <TextView
@@ -59,11 +59,11 @@
                 android:layout_marginTop="8dp"
                 android:text="Car: Make Model Year"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
                 app:layout_constraintTop_toBottomOf="@+id/vehicleNameText" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
@@ -84,7 +84,7 @@
                 android:text="Capacity: 0 gal"
                 android:textColor="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
                 app:layout_constraintTop_toBottomOf="@+id/mpgText" />
 
             <TextView

@@ -34,9 +34,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAMFb2kCDKh1zG1e-d1K43XxZXOmQQ65Ew" />
 
-        <activity android:name=".FuelActivity"
-            android:parentActivityName=".LocationActivity">
-        </activity>
+        <activity
+            android:name=".FuelActivity"
+            android:parentActivityName=".LocationActivity"/>
+
+        <activity android:name=".Gastimate"
+            android:parentActivityName=".LocationActivity"/>
     </application>
 
 </manifest>

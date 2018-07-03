@@ -31,6 +31,11 @@ public class LocationActivity extends AppCompatActivity
     ImageView fromImageView;
     ImageView toImageView;
 
+    public static String currentFrom;
+    public static String currentTo;
+    public static LatLng currentFromLatLng;
+    public static LatLng currentToLatLng;
+
     /**
      * Called when activity is created
      * @param savedInstanceState, previous state if exists
@@ -108,6 +113,8 @@ public class LocationActivity extends AppCompatActivity
             {
                 fromLocation.setText(line);
                 fromCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
+                currentFrom = line;
+                currentFromLatLng = latLng;
                 Picasso.get()
                         .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
@@ -119,6 +126,8 @@ public class LocationActivity extends AppCompatActivity
             {
                 toLocation.setText(line);
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
+                currentTo = line;
+                currentToLatLng = latLng;
                 Picasso.get()
                         .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)

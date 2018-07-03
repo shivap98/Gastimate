@@ -60,7 +60,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             carText = view.findViewById(R.id.carText);
             mpgText = view.findViewById(R.id.mpgText);
             capacityText = view.findViewById(R.id.capacityText);
-            imageView = view.findViewById(R.id.imageView);
+            imageView = view.findViewById(R.id.imageView1);
             vehicleName = view.findViewById(R.id.vehicleName);
             cardView = view.findViewById(R.id.cardView);
 

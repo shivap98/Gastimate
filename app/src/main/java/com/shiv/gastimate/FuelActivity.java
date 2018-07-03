@@ -21,7 +21,7 @@ public class FuelActivity extends AppCompatActivity
     TextView customFuelPriceText;
     TextView textView;
 
-    double currentSetPrice;
+    public static double currentSetPrice;
 
     /**
      * Called when activity is created
