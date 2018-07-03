@@ -84,4 +84,8 @@ public class MainActivity extends AppCompatActivity
         super.onPostResume();
         vehiclesList.scrollToPosition(0);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

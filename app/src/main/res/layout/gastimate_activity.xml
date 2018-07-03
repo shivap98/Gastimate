@@ -79,8 +79,8 @@
 
                 <ImageView
                     android:id="@+id/imageView1"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -98,7 +98,7 @@
                     android:layout_marginTop="8dp"
                     android:text="gal"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/gasValue"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -112,7 +112,7 @@
                     android:layout_marginTop="8dp"
                     android:text="0.00"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView1"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +126,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Gas Needed:"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView1"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -154,8 +154,8 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -173,7 +173,7 @@
                     android:layout_marginTop="8dp"
                     android:text="USD"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/moneyValue"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -187,7 +187,7 @@
                     android:layout_marginTop="8dp"
                     android:text="0.00"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +201,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Cost of gas:"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -229,8 +229,8 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -248,7 +248,7 @@
                     android:layout_marginTop="8dp"
                     android:text="miles"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/distanceValue"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -262,7 +262,7 @@
                     android:layout_marginTop="8dp"
                     android:text="0.00"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView3"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -276,7 +276,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Trip distance:"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView3"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -306,8 +306,8 @@
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -325,7 +325,7 @@
                     android:layout_marginTop="8dp"
                     android:text="hours"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/timeValue"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -339,7 +339,7 @@
                     android:layout_marginTop="8dp"
                     android:text="0:00"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView4"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -351,9 +351,9 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="8dp"
-                    android:text="Trip distance:"
+                    android:text="Total time:"
                     android:textColor="@android:color/black"
-                    android:textSize="24sp"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -1,6 +1,8 @@
 package com.shiv.gastimate;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -81,6 +83,17 @@ public class FuelActivity extends AppCompatActivity
                 {
                     setPriceText();
                 }catch(Exception e) {}
+            }
+        });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(FuelActivity.this, Gastimate.class);
+                startActivity(intent);
             }
         });
     }

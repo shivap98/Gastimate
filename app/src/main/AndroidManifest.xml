@@ -39,7 +39,7 @@
             android:parentActivityName=".LocationActivity"/>
 
         <activity android:name=".Gastimate"
-            android:parentActivityName=".LocationActivity"/>
+            android:parentActivityName=".FuelActivity"/>
     </application>
 
 </manifest>

@@ -12,11 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,7 +88,7 @@ public class LocationSearchActivity extends AppCompatActivity
                         Log.e("Enter Press", Arrays.toString(e.getStackTrace()));
                     }
                     view = v;
-                    onSearch();     //calls the search method
+                    geocodeAPI();     //calls the search method
                     return true;
                 }
                 return false;
@@ -110,14 +108,14 @@ public class LocationSearchActivity extends AppCompatActivity
                 }
                 else
                 {
-                    onSearch();
+                    geocodeAPI();
                 }
             }
         });
     }
 
     //Called by enter key in EditText or fab in search mode to search for location
-    void onSearch()
+    void geocodeAPI()
     {
         String address = locationInput.getText().toString();
         address = address.replace(" ", "+");
@@ -170,7 +168,7 @@ public class LocationSearchActivity extends AppCompatActivity
             public void onErrorResponse(VolleyError e)
             {
                 Log.e("Geocoding", "Connection Error");
-                Toast.makeText(getBaseContext(), "Geocoding Connection Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Connection Error", Toast.LENGTH_SHORT).show();
                 locationSummary.setVisibility(View.INVISIBLE);
                 locationSet = false;
                 setFABicon();
