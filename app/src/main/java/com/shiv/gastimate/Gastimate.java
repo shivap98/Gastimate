@@ -60,6 +60,8 @@ public class Gastimate extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(Gastimate.this, MainActivity.class);
+                //Clearing all previous activities cause going back to main screen now
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finishAndRemoveTask();
             }
@@ -141,7 +143,8 @@ public class Gastimate extends AppCompatActivity
         }
         else
         {
-            timeValue.setText((String.format("%d", (int) time)));
+            String minutes = String.format("%d", (int) time);
+            timeValue.setText(minutes.replace(".", ":"));
             timeUnit.setText("minutes");
         }
     }

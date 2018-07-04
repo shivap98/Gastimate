@@ -21,7 +21,6 @@ public class FuelActivity extends AppCompatActivity
     TextView currentSetPriceText;
     EditText priceInput;
     TextView customFuelPriceText;
-    TextView textView;
 
     public static double currentSetPrice;
 
@@ -41,10 +40,6 @@ public class FuelActivity extends AppCompatActivity
         currentSetPriceText = findViewById(R.id.currentSetPrice);
         priceInput = findViewById(R.id.priceInput);
         customFuelPriceText = findViewById(R.id.customFuelPriceText);
-        textView = findViewById(R.id.textView);
-
-        Vehicle vehicle = MainActivity.currentVehicle;
-        textView.setText(vehicle.toString());
 
         customFuelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {

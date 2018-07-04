@@ -23,7 +23,6 @@ import static com.shiv.gastimate.Constants.TO_LOCATION_REQUEST;
 
 public class LocationActivity extends AppCompatActivity
 {
-    TextView textView;
     TextView fromLocation;
     TextView toLocation;
     TextView fromCoordinates;
@@ -47,16 +46,12 @@ public class LocationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_activity);
 
-        textView = findViewById(R.id.carSummary);
         fromLocation = findViewById(R.id.fromLocation);
         toLocation = findViewById(R.id.toLocation);
         fromCoordinates = findViewById(R.id.coordinatesFrom);
         toCoordinates = findViewById(R.id.coordinatesTo);
         fromImageView= findViewById(R.id.fromImageView);
         toImageView = findViewById(R.id.toImageView);
-
-        Vehicle vehicle = MainActivity.currentVehicle;
-        textView.setText(vehicle.toString());
 
         CardView fromCardView = findViewById(R.id.fromCardView);
         fromCardView.setOnClickListener(new View.OnClickListener()
