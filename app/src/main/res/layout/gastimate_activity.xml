@@ -16,6 +16,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView2"
+                android:animateLayoutChanges="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -32,7 +33,8 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/gasLayout"
@@ -337,6 +339,7 @@
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/summaryLayout"
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -385,6 +388,7 @@
 
                         <android.support.constraint.ConstraintLayout
                             android:id="@+id/summaryDetails"
+                            android:animateLayoutChanges="true"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
@@ -423,7 +427,7 @@
                                 android:layout_marginTop="8dp"
                                 android:text="Vehicle:"
                                 android:textColor="@android:color/black"
-                                app:layout_constraintStart_toEndOf="@+id/imageView"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/fromText" />
 
                             <TextView
@@ -432,8 +436,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="From:"
                                 android:textColor="@android:color/black"
-                                app:layout_constraintStart_toEndOf="@+id/imageView"
-                                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="parent" />
                         </android.support.constraint.ConstraintLayout>
 
                     </android.support.constraint.ConstraintLayout>
