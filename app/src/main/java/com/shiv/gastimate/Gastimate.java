@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,14 +17,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
 import static com.shiv.gastimate.LocationActivity.currentToLatLng;
@@ -41,6 +40,7 @@ public class Gastimate extends AppCompatActivity
     TextView toText;
     TextView vehicleText;
     TextView gasText;
+    ImageView dropDown;
 
     double distance;        //in miles
     double time;            //in minutes
@@ -65,6 +65,7 @@ public class Gastimate extends AppCompatActivity
         toText = findViewById(R.id.toText);
         vehicleText = findViewById(R.id.vehicleText);
         gasText = findViewById(R.id.gasText);
+        dropDown = findViewById(R.id.dropDownSymbol);
 
         distanceMatrixAPI();
         setSummary();
@@ -91,10 +92,12 @@ public class Gastimate extends AppCompatActivity
                 if(summaryDetails.getVisibility() == View.VISIBLE)
                 {
                     summaryDetails.setVisibility(View.GONE);
+                    dropDown.setRotation(0);
                 }
                 else if(summaryDetails.getVisibility() == View.GONE)
                 {
                     summaryDetails.setVisibility(View.VISIBLE);
+                    dropDown.setRotation(180);
                 }
             }
         });
