@@ -2,6 +2,7 @@ package com.shiv.gastimate;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +35,13 @@ public class Gastimate extends AppCompatActivity
     TextView timeValue;
     TextView timeUnit;
 
+    ConstraintLayout summaryLayout;
+    ConstraintLayout summaryDetails;
+    TextView fromText;
+    TextView toText;
+    TextView vehicleText;
+    TextView gasText;
+
     double distance;        //in miles
     double time;            //in minutes
     double gas;
@@ -51,7 +59,15 @@ public class Gastimate extends AppCompatActivity
         timeValue = findViewById(R.id.timeValue);
         timeUnit = findViewById(R.id.unit4);
 
+        summaryLayout = findViewById(R.id.summaryLayout);
+        summaryDetails = findViewById(R.id.summaryDetails);
+        fromText = findViewById(R.id.fromText);
+        toText = findViewById(R.id.toText);
+        vehicleText = findViewById(R.id.vehicleText);
+        gasText = findViewById(R.id.gasText);
+
         distanceMatrixAPI();
+        setSummary();
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
@@ -64,6 +80,22 @@ public class Gastimate extends AppCompatActivity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finishAndRemoveTask();
+            }
+        });
+
+        summaryLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(summaryDetails.getVisibility() == View.VISIBLE)
+                {
+                    summaryDetails.setVisibility(View.GONE);
+                }
+                else if(summaryDetails.getVisibility() == View.GONE)
+                {
+                    summaryDetails.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -147,5 +179,14 @@ public class Gastimate extends AppCompatActivity
             timeValue.setText(minutes.replace(".", ":"));
             timeUnit.setText("minutes");
         }
+    }
+
+    @SuppressLint("DefaultLocale")
+    void setSummary()
+    {
+        fromText.setText(String.format("From: %s", LocationActivity.currentFrom));
+        toText.setText(String.format("To: %s", LocationActivity.currentTo));
+        vehicleText.setText(String.format("Vehicle: %s", MainActivity.currentVehicle.name));
+        gasText.setText(String.format("Gas price: %.2f USD/gal", FuelActivity.currentSetPrice));
     }
 }
