@@ -1,12 +1,16 @@
 package com.shiv.gastimate;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -14,14 +18,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 public class FuelActivity extends AppCompatActivity
 {
     TextInputLayout textInputLayout;
-    Button setPriceButton;
     TextView currentSetPriceText;
     EditText priceInput;
     TextView customFuelPriceText;
 
+    double currentPriceAPI = 3.47;
     public static double currentSetPrice;
 
     /**
@@ -36,26 +42,36 @@ public class FuelActivity extends AppCompatActivity
 
         final Switch customFuelSwitch = findViewById(R.id.customFuelSwitch);
         textInputLayout = findViewById(R.id.textInputLayout);
-        setPriceButton = findViewById(R.id.setPriceButton);
         currentSetPriceText = findViewById(R.id.currentSetPrice);
         priceInput = findViewById(R.id.priceInput);
         customFuelPriceText = findViewById(R.id.customFuelPriceText);
 
+        currentSetPrice = currentPriceAPI;
+        setPriceText();
+
         customFuelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
-            //TODO: After implementing API, toggle between custom and api fuel price here too
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
                 if(isChecked)
                 {
                     textInputLayout.setVisibility(View.VISIBLE);
-                    setPriceButton.setVisibility(View.VISIBLE);
+                    try
+                    {
+                        currentSetPrice = Double.parseDouble(priceInput.getText().toString());
+                    }
+                    catch(Exception e)
+                    {
+                        currentSetPrice = currentPriceAPI;
+                    }
+                    setPriceText();
                 }
                 else
                 {
                     textInputLayout.setVisibility(View.GONE);
-                    setPriceButton.setVisibility(View.GONE);
+                    currentSetPrice = currentPriceAPI;
+                    setPriceText();
                 }
             }
         });
@@ -69,15 +85,29 @@ public class FuelActivity extends AppCompatActivity
             }
         });
 
-        setPriceButton.setOnClickListener(new View.OnClickListener()
+        priceInput.setOnKeyListener(new View.OnKeyListener()
         {
-            @Override
-            public void onClick(View view)
+            public boolean onKey(View v, int keyCode, KeyEvent event)
             {
-                try
+                // If the event is a key-down event on the "Enter" key
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER))
                 {
+                    try     //hides the keyboard on enter press
+                    {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        assert imm != null;
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }catch(Exception e)
+                    {
+                        Log.e("Enter Press", Arrays.toString(e.getStackTrace()));
+                    }
+
+                    currentSetPrice = Double.parseDouble(priceInput.getText().toString());
                     setPriceText();
-                }catch(Exception e) {}
+
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -97,7 +127,6 @@ public class FuelActivity extends AppCompatActivity
     @SuppressLint("DefaultLocale")
     void setPriceText()
     {
-        currentSetPrice = Double.parseDouble(priceInput.getText().toString());
         if(currentSetPrice <= 100.00)
         {
             currentSetPriceText.setText(String.format("%2.2f", currentSetPrice));

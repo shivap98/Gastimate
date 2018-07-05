@@ -105,17 +105,6 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/setPriceButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="8dp"
-                android:text="Set Price"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
@@ -135,7 +124,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textView4"
