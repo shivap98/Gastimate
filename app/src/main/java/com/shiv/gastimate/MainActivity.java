@@ -6,6 +6,7 @@ package com.shiv.gastimate;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,6 +73,17 @@ public class MainActivity extends AppCompatActivity
                         break;
                     }
                 }
+                startActivity(intent);
+            }
+        });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, VehicleAddActivity.class);
                 startActivity(intent);
             }
         });

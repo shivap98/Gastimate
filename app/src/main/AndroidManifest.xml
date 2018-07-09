@@ -36,10 +36,13 @@
 
         <activity
             android:name=".FuelActivity"
-            android:parentActivityName=".LocationActivity"/>
-
-        <activity android:name=".Gastimate"
-            android:parentActivityName=".FuelActivity"/>
+            android:parentActivityName=".LocationActivity" />
+        <activity
+            android:name=".Gastimate"
+            android:parentActivityName=".FuelActivity" />
+        <activity
+            android:name=".VehicleAddActivity"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>
