@@ -10,11 +10,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.transition.Fade;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
@@ -35,8 +39,11 @@ public class LocationActivity extends AppCompatActivity
     public static LatLng currentFromLatLng;
     public static LatLng currentToLatLng;
 
+    GoogleApiClient googleApiClient;
+
     /**
      * Called when activity is created
+     *
      * @param savedInstanceState, previous state if exists
      */
     @SuppressLint("DefaultLocale")
@@ -46,11 +53,18 @@ public class LocationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_activity);
 
+        googleApiClient = new GoogleApiClient
+                .Builder(this)
+                .enableAutoManage(this, 0, null)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
+
         fromLocation = findViewById(R.id.fromLocation);
         toLocation = findViewById(R.id.toLocation);
         fromCoordinates = findViewById(R.id.coordinatesFrom);
         toCoordinates = findViewById(R.id.coordinatesTo);
-        fromImageView= findViewById(R.id.fromImageView);
+        fromImageView = findViewById(R.id.fromImageView);
         toImageView = findViewById(R.id.toImageView);
 
         CardView fromCardView = findViewById(R.id.fromCardView);
@@ -59,9 +73,7 @@ public class LocationActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
-                intent.putExtra("locationRequestType", FROM_LOCATION_REQUEST);
-                startActivityForResult(intent, 0);
+                openPlacePicker(FROM_LOCATION_REQUEST);
             }
         });
 
@@ -71,9 +83,7 @@ public class LocationActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(LocationActivity.this, LocationSearchActivity.class);
-                intent.putExtra("locationRequestType", Constants.TO_LOCATION_REQUEST);
-                startActivityForResult(intent, 0);
+                openPlacePicker(TO_LOCATION_REQUEST);
             }
         });
 
@@ -89,39 +99,58 @@ public class LocationActivity extends AppCompatActivity
         });
     }
 
+    private void openPlacePicker(int requestCode)
+    {
+        if((googleApiClient == null) || (!googleApiClient.isConnected()))
+        {
+            return;
+        }
+
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try
+        {
+            startActivityForResult(builder.build(LocationActivity.this), requestCode);
+        }
+        catch(Exception e)
+        {
+            Log.d("Places API", e.getMessage());
+        }
+    }
+
     /**
      * Called when location search activity is done
+     *
      * @param requestCode, used to identify activity sending the info
-     * @param resultCode
+     * @param resultCode, not used
      * @param intent, contains the data from location search activity
      */
     @SuppressLint("DefaultLocale")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
-        if((requestCode == 0) && (intent != null))
+        if(intent != null)
         {
-            int locationRequestType = intent.getIntExtra("locationRequestType", FROM_LOCATION_REQUEST);
-            String line = intent.getStringExtra("locationLine");
-            LatLng latLng = intent.getParcelableExtra("latLng");
-            if(locationRequestType == FROM_LOCATION_REQUEST)
+            if(requestCode == FROM_LOCATION_REQUEST)
             {
-                fromLocation.setText(line);
+                Place place = PlacePicker.getPlace(this, intent);
+                fromLocation.setText(place.getAddress().toString().replace(", ", "\n"));
+                LatLng latLng = place.getLatLng();
                 fromCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
-                currentFrom = line;
+                currentFrom = (String) place.getName();
                 currentFromLatLng = latLng;
                 Picasso.get()
                         .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
                         .fit()
                         .into(fromImageView);
-
             }
-            else if(locationRequestType == TO_LOCATION_REQUEST)
+            else if(requestCode == TO_LOCATION_REQUEST)
             {
-                toLocation.setText(line);
+                Place place = PlacePicker.getPlace(this, intent);
+                toLocation.setText(place.getAddress().toString().replace(", ", "\n"));
+                LatLng latLng = place.getLatLng();
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
-                currentTo = line;
+                currentTo = (String) place.getName();
                 currentToLatLng = latLng;
                 Picasso.get()
                         .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
@@ -138,5 +167,25 @@ public class LocationActivity extends AppCompatActivity
     {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        if(googleApiClient != null)
+        {
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        if((googleApiClient != null) && (googleApiClient.isConnected()))
+        {
+            googleApiClient.disconnect();
+        }
+        super.onStop();
     }
 }
