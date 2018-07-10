@@ -7,6 +7,7 @@ package com.shiv.gastimate;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,7 +30,9 @@ public class FuelActivity extends AppCompatActivity
     TextInputLayout textInputLayout;
     TextView currentSetPriceText;
     EditText priceInput;
-    TextView customFuelPriceText;
+    ConstraintLayout cToggle;
+    ConstraintLayout cInput;
+    Switch customFuelSwitch;
 
     double currentPriceAPI = 3.47;
     public static double currentSetPrice;
@@ -44,15 +47,17 @@ public class FuelActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fuel_activity);
 
-        final Switch customFuelSwitch = findViewById(R.id.customFuelSwitch);
+        customFuelSwitch = findViewById(R.id.customFuelSwitch);
         textInputLayout = findViewById(R.id.textInputLayout);
         currentSetPriceText = findViewById(R.id.currentSetPrice);
         priceInput = findViewById(R.id.priceInput);
-        customFuelPriceText = findViewById(R.id.customFuelPriceText);
+        cToggle = findViewById(R.id.customInputToggle);
+        cInput = findViewById(R.id.customInputLayout);
 
         currentSetPrice = currentPriceAPI;
         setPriceText();
 
+        cInput.setVisibility(View.GONE);
         customFuelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -60,7 +65,7 @@ public class FuelActivity extends AppCompatActivity
             {
                 if(isChecked)
                 {
-                    textInputLayout.setVisibility(View.VISIBLE);
+                    cInput.setVisibility(View.VISIBLE);
                     try
                     {
                         currentSetPrice = Double.parseDouble(priceInput.getText().toString());
@@ -73,14 +78,14 @@ public class FuelActivity extends AppCompatActivity
                 }
                 else
                 {
-                    textInputLayout.setVisibility(View.GONE);
+                    cInput.setVisibility(View.GONE);
                     currentSetPrice = currentPriceAPI;
                     setPriceText();
                 }
             }
         });
 
-        customFuelPriceText.setOnClickListener(new View.OnClickListener()
+        cToggle.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)

@@ -119,7 +119,7 @@ public class LocationSearchActivity extends AppCompatActivity
     {
         String address = locationInput.getText().toString();
         address = address.replace(" ", "+");
-        String key = getResources().getString(R.string.geocode_api_key);
+        String key = getResources().getString(R.string.maps_api_key);
 
         String url = String.format("https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s", address, key);
 
