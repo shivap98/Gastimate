@@ -26,12 +26,13 @@ public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;
     VehicleListAdapter vehicleListAdapter;
-    ArrayList<Vehicle> vehicles;
 
+    public static ArrayList<Vehicle> vehicles;
     public static Vehicle currentVehicle;
 
     /**
      * Called when activity is created
+     *
      * @param savedInstanceState, previous state if exists
      */
     @Override
@@ -54,29 +55,6 @@ public class MainActivity extends AppCompatActivity
         vehicleListAdapter = new VehicleListAdapter(vehicles);
         vehiclesList.setAdapter(vehicleListAdapter);
 
-        vehicleListAdapter.setClickListener(new VehicleListAdapter.ItemClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-            }
-
-            @Override
-            public void onItemClick(View view, String vehicleName)
-            {
-                Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                for(Vehicle vehicle : vehicles)
-                {
-                    if(vehicle.name.equals(vehicleName))
-                    {
-                        currentVehicle = vehicle;
-                        break;
-                    }
-                }
-                startActivity(intent);
-            }
-        });
-
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener()
         {
@@ -98,6 +76,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
     }
 }

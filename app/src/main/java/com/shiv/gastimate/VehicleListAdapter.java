@@ -5,6 +5,7 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -23,21 +24,6 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 {
     ArrayList<Vehicle> vehicles = new ArrayList<>();
     ArrayList<Vehicle> vehiclesBackup = new ArrayList<>();
-
-    private ItemClickListener itemClickListener;
-
-    /**
-     * Function to set the itemClickListener object
-     */
-    public void setClickListener(ItemClickListener itemClickListener)
-    {
-        this.itemClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener extends View.OnClickListener
-    {
-        void onItemClick(View view, String vehicleName);
-    }
 
     /**
      * Helper class which assigns all the views within the list object
@@ -70,7 +56,16 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View view)
         {
-            itemClickListener.onItemClick(view, vehicleName.getText().toString());
+            Intent intent = new Intent(view.getContext(), LocationActivity.class);
+            for(int i=0; i<MainActivity.vehicles.size(); i++)
+            {
+                if(vehicles.get(i).name.equals(vehicleName.getText().toString()))
+                {
+                    MainActivity.currentVehicle = MainActivity.vehicles.get(i);
+                    break;
+                }
+            }
+            view.getContext().startActivity(intent);
         }
     }
 
