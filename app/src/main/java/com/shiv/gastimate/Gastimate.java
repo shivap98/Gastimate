@@ -5,6 +5,8 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -110,8 +112,9 @@ public class Gastimate extends AppCompatActivity
     @SuppressLint("DefaultLocale")
     void distanceMatrixAPI()
     {
-        String url = String.format("http://maps.google.com/maps/api/distancematrix/json?units=imperial&origins=%f,%f&destinations=%f,%f",
-                currentFromLatLng.latitude, currentFromLatLng.longitude, currentToLatLng.latitude, currentToLatLng.longitude);
+        String url = String.format("%s&origins=%f,%f&destinations=%f,%f", getResources().getString(R.string.distance_matrix_url),
+                currentFromLatLng.latitude, currentFromLatLng.longitude,
+                currentToLatLng.latitude, currentToLatLng.longitude);
 
         // Listener for response
         Response.Listener<String> responseListener = new Response.Listener<String>()
@@ -136,6 +139,10 @@ public class Gastimate extends AppCompatActivity
                 }
                 catch(Exception e)
                 {
+                    if(response.contains("ZERO_RESULTS"))
+                    {
+                        notDrivable();
+                    }
                     Log.e("Distance Matrix", "Parsing Error: " + e.getMessage());
                 }
             }
@@ -163,6 +170,24 @@ public class Gastimate extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    void notDrivable()
+    {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Error getting the driving distance!");
+        alertDialogBuilder.setMessage("There is no driving path available for the given locations.\nPlease go back and try again.");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setNeutralButton("Ok", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                onBackPressed();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     void setValues()
     {
@@ -178,7 +203,7 @@ public class Gastimate extends AppCompatActivity
         {
             int hours = (int) time/60;
             int minutes = (int) time%60;
-            timeValue.setText(String.format("%d:%2d", hours, minutes));
+            timeValue.setText(String.format("%d:%02d", hours, minutes));
         }
         else
         {

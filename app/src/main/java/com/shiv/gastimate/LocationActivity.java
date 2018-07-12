@@ -139,7 +139,8 @@ public class LocationActivity extends AppCompatActivity
                 currentFrom = (String) place.getName();
                 currentFromLatLng = latLng;
                 Picasso.get()
-                        .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
+                                getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
                         .fit()
                         .into(fromImageView);
@@ -153,7 +154,8 @@ public class LocationActivity extends AppCompatActivity
                 currentTo = (String) place.getName();
                 currentToLatLng = latLng;
                 Picasso.get()
-                        .load(String.format("http://maps.google.com/maps/api/staticmap?center=%f,%f&zoom=18&size=400x400&sensor=false", latLng.latitude, latLng.longitude))
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
+                                getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
                         .fit()
                         .into(toImageView);
