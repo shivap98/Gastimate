@@ -31,8 +31,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:12.0.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    //For volley api requests
     implementation 'com.android.volley:volley:1.0.0'
+    //For setting the imageviews from api
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //For place picker
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.gms:play-services:12.0.1'
+    //For rounded imageview
+    implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 }

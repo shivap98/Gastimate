@@ -133,13 +133,13 @@ public class LocationActivity extends AppCompatActivity
             if(requestCode == FROM_LOCATION_REQUEST)
             {
                 Place place = PlacePicker.getPlace(this, intent);
-                fromLocation.setText(place.getAddress().toString().replace(", ", "\n"));
+                fromLocation.setText(place.getName());
                 LatLng latLng = place.getLatLng();
                 fromCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
                 currentFrom = (String) place.getName();
                 currentFromLatLng = latLng;
                 Picasso.get()
-                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
                         .fit()
@@ -148,13 +148,13 @@ public class LocationActivity extends AppCompatActivity
             else if(requestCode == TO_LOCATION_REQUEST)
             {
                 Place place = PlacePicker.getPlace(this, intent);
-                toLocation.setText(place.getAddress().toString().replace(", ", "\n"));
+                toLocation.setText(place.getName());
                 LatLng latLng = place.getLatLng();
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
                 currentTo = (String) place.getName();
                 currentToLatLng = latLng;
                 Picasso.get()
-                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
                         .fit()

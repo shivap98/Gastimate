@@ -27,17 +27,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <!--Preview looks wonky but works fine in app!-->
+            <com.joooonho.SelectableRoundedImageView
                 android:id="@+id/fromImageView"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_add_location"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_location" />
+                app:sriv_left_bottom_corner_radius="12dp"
+                app:sriv_left_top_corner_radius="12dp" />
 
             <TextView
                 android:id="@+id/from"
@@ -123,17 +123,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <!--Preview looks wonky but works fine in app!-->
+            <com.joooonho.SelectableRoundedImageView
                 android:id="@+id/toImageView"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_add_location"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_location" />
+                app:sriv_left_bottom_corner_radius="12dp"
+                app:sriv_left_top_corner_radius="12dp"  />
 
             <TextView
                 android:id="@+id/coordinatesTo"
