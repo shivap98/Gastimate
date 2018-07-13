@@ -16,14 +16,26 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
+
+import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
+import static com.shiv.gastimate.LocationActivity.currentToLatLng;
 
 public class FuelActivity extends AppCompatActivity
 {
@@ -33,8 +45,9 @@ public class FuelActivity extends AppCompatActivity
     ConstraintLayout cToggle;
     ConstraintLayout cInput;
     Switch customFuelSwitch;
+    TextView currentApiPriceText;
 
-    double currentPriceAPI = 3.47;
+    double currentPriceAPI;
     public static double currentSetPrice;
 
     /**
@@ -53,9 +66,9 @@ public class FuelActivity extends AppCompatActivity
         priceInput = findViewById(R.id.priceInput);
         cToggle = findViewById(R.id.customInputToggle);
         cInput = findViewById(R.id.customInputLayout);
+        currentApiPriceText = findViewById(R.id.currentApiPrice);
 
-        currentSetPrice = currentPriceAPI;
-        setPriceText();
+        fuelAPI();
 
         cInput.setVisibility(View.GONE);
         customFuelSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
@@ -130,6 +143,62 @@ public class FuelActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+    }
+
+    @SuppressLint("DefaultLocale")
+    void fuelAPI()
+    {
+        String url = "https://gasprices.aaa.com/";
+
+        // Listener for response
+        Response.Listener<String> responseListener = new Response.Listener<String>()
+        {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onResponse(String response)
+            {
+                try
+                {
+                    parse(response);
+                }
+                catch(Exception e)
+                {
+                    Log.e("Fuel API", "Parsing Error");
+                    Toast.makeText(getBaseContext(), "Parsing", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        // Listener for error
+        Response.ErrorListener errorListener= new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError e)
+            {
+                Log.e("Fuel API", "Connection Error");
+                Toast.makeText(getBaseContext(), "Connection", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        //StringRequest which uses the method, url, responseListener and the errorListener
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
+
+        //Queue of the requests that are to be sent
+        RequestQueue requestQueue = Volley.newRequestQueue(FuelActivity.this);
+
+        //Adding the StringRequest to the queue so that it is sent
+        requestQueue.add(stringRequest);
+    }
+
+    @SuppressLint("SetTextI18n")
+    void parse(String response) throws Exception
+    {
+        int index = response.indexOf("$");
+        index++;
+        currentPriceAPI = Double.parseDouble(response.substring(index, index+4));
+        currentSetPrice = currentPriceAPI;
+        currentApiPriceText.setText(Double.toString(currentSetPrice));
+        setPriceText();
     }
 
     //Called when set price button is checked
