@@ -142,7 +142,8 @@ public class LocationActivity extends AppCompatActivity
                         .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
-                        .fit()
+                        .centerCrop()
+                        .resize(fromImageView.getWidth(), fromImageView.getHeight())
                         .into(fromImageView);
             }
             else if(requestCode == TO_LOCATION_REQUEST)
@@ -157,7 +158,8 @@ public class LocationActivity extends AppCompatActivity
                         .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
                         .error(R.drawable.ic_location)
-                        .fit()
+                        .centerCrop()
+                        .resize(toImageView.getWidth(), toImageView.getHeight())
                         .into(toImageView);
             }
         }

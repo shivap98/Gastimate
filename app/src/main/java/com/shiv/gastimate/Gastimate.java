@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,8 +84,8 @@ public class Gastimate extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(Gastimate.this, MainActivity.class);
-                //Clearing all previous activities cause going back to main screen now
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //Clearing the entire back stack and going back to MainActivity
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finishAndRemoveTask();
             }
@@ -181,11 +182,18 @@ public class Gastimate extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialogInterface, int i)
             {
-                onBackPressed();
+                Intent intent = new Intent(Gastimate.this, LocationActivity.class);
+                //Clearing the back stack after LocationActivity, this still allows it to go back to the MainActivity
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        try
+        {
+            alertDialog.show();
+        }
+        catch(WindowManager.BadTokenException e){}        //Called when Gastimate activity is closed
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})

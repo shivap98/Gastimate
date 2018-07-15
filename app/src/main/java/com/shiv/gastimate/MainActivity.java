@@ -5,15 +5,12 @@ package com.shiv.gastimate;
  */
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Slide;
 import android.view.View;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,8 @@ import static com.shiv.gastimate.Constants.CAR;
 import static com.shiv.gastimate.Constants.MOTORCYCLE;
 import static com.shiv.gastimate.Constants.NOT_TRACKING;
 import static com.shiv.gastimate.Constants.OTHER;
+
+//TODO: Change all Exception catching to specific exceptions
 
 public class MainActivity extends AppCompatActivity
 {
