@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +72,8 @@ public class Gastimate extends AppCompatActivity
         vehicleText = findViewById(R.id.vehicleText);
         gasText = findViewById(R.id.gasText);
         dropDown = findViewById(R.id.dropDownSymbol);
+
+        summaryDetails.setVisibility(View.GONE);
 
         distanceMatrixAPI();
         setSummary();
@@ -224,8 +225,8 @@ public class Gastimate extends AppCompatActivity
     @SuppressLint("DefaultLocale")
     void setSummary()
     {
-        fromText.setText(String.format("From: %s", LocationActivity.currentFrom));
-        toText.setText(String.format("To: %s", LocationActivity.currentTo));
+        fromText.setText(String.format("From: %s", LocationActivity.currentFromName));
+        toText.setText(String.format("To: %s", LocationActivity.currentToName));
         vehicleText.setText(String.format("Vehicle: %s", MainActivity.currentVehicle.name));
         gasText.setText(String.format("Gas price: %.2f USD/gal", FuelActivity.currentSetPrice));
     }

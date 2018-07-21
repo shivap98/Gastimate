@@ -356,12 +356,11 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_marginEnd="16dp"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:tint="@color/darkGrey"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_drop_down"
-                            android:tint="@color/darkGrey"/>
+                            app:srcCompat="@drawable/ic_drop_down" />
 
                         <TextView
                             android:id="@+id/textView5"
@@ -406,50 +405,54 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:animateLayoutChanges="true"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                             <TextView
                                 android:id="@+id/toText"
-                                android:layout_width="wrap_content"
+                                android:layout_width="160dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:text="To:"
+                                android:singleLine="true"
                                 android:textColor="@android:color/black"
                                 app:layout_constraintStart_toEndOf="@+id/fromText"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
                                 android:id="@+id/gasText"
-                                android:layout_width="wrap_content"
+                                android:layout_width="160dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="8dp"
                                 android:text="Gas price:"
+                                android:singleLine="true"
                                 android:textColor="@android:color/black"
                                 app:layout_constraintStart_toEndOf="@+id/vehicleText"
                                 app:layout_constraintTop_toBottomOf="@+id/toText" />
 
                             <TextView
                                 android:id="@+id/vehicleText"
-                                android:layout_width="wrap_content"
+                                android:layout_width="160dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="Vehicle:"
+                                android:singleLine="true"
                                 android:textColor="@android:color/black"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/fromText" />
 
                             <TextView
                                 android:id="@+id/fromText"
-                                android:layout_width="wrap_content"
+                                android:layout_width="160dp"
                                 android:layout_height="wrap_content"
                                 android:text="From:"
+                                android:singleLine="true"
                                 android:textColor="@android:color/black"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent" />
                         </android.support.constraint.ConstraintLayout>
 
                     </android.support.constraint.ConstraintLayout>

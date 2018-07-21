@@ -24,26 +24,17 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/fromLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <!--Preview looks wonky but works fine in app!-->
-            <com.joooonho.SelectableRoundedImageView
-                android:id="@+id/fromImageView"
-                android:layout_width="60dp"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_add_location"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:sriv_left_bottom_corner_radius="12dp"
-                app:sriv_left_top_corner_radius="12dp" />
 
             <TextView
                 android:id="@+id/from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="13dp"
                 android:layout_marginTop="16dp"
                 android:text="From:"
                 android:textColor="@android:color/black"
@@ -56,30 +47,25 @@
                 android:id="@+id/setLocationFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/fromImageView"
+                app:layout_constraintStart_toStartOf="@+id/from"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
 
             <TextView
                 android:id="@+id/coordinatesFromText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Coordinates:"
                 android:textColor="@android:color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/fromImageView"
-                app:layout_constraintTop_toBottomOf="@+id/setLocationFrom"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/from"
+                app:layout_constraintTop_toBottomOf="@+id/fromLocation" />
 
             <TextView
                 android:id="@+id/coordinatesFrom"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="8dp"
@@ -91,13 +77,39 @@
 
             <TextView
                 android:id="@+id/fromLocation"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationFrom"
                 app:layout_constraintTop_toBottomOf="@+id/from" />
+
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/fromImageView"
+                android:layout_width="110dp"
+                android:layout_height="0dp"
+                android:background="@color/grey"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/fromIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:sriv_left_bottom_corner_radius="12dp"
+                app:sriv_left_top_corner_radius="12dp" />
+
+            <ImageView
+                android:id="@+id/fromIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_location" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -120,24 +132,15 @@
         app:layout_constraintTop_toBottomOf="@+id/fromCardView">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/toLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <!--Preview looks wonky but works fine in app!-->
-            <com.joooonho.SelectableRoundedImageView
-                android:id="@+id/toImageView"
-                android:layout_width="60dp"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_add_location"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:sriv_left_bottom_corner_radius="12dp"
-                app:sriv_left_top_corner_radius="12dp"  />
 
             <TextView
                 android:id="@+id/coordinatesTo"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="8dp"
@@ -151,21 +154,17 @@
                 android:id="@+id/coordinatesToText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Coordinates:"
                 android:textColor="@android:color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toImageView"
-                app:layout_constraintTop_toBottomOf="@+id/setLocationTo"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/to"
+                app:layout_constraintTop_toBottomOf="@+id/toLocation" />
 
             <TextView
                 android:id="@+id/to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="13dp"
                 android:layout_marginTop="16dp"
                 android:text="To:"
                 android:textColor="@android:color/black"
@@ -178,22 +177,48 @@
                 android:id="@+id/setLocationTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:text="Set Location:"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/toImageView"
+                app:layout_constraintStart_toStartOf="@+id/to"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
 
             <TextView
                 android:id="@+id/toLocation"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="Location Not Set Yet"
                 app:layout_constraintStart_toEndOf="@+id/setLocationTo"
                 app:layout_constraintTop_toBottomOf="@+id/to" />
+
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/toImageView"
+                android:layout_width="110dp"
+                android:layout_height="0dp"
+                android:background="@color/grey"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toIcon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:sriv_left_bottom_corner_radius="12dp"
+                app:sriv_left_top_corner_radius="12dp" />
+
+            <ImageView
+                android:id="@+id/toIcon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_location" />
+
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 

@@ -33,9 +33,11 @@ public class LocationActivity extends AppCompatActivity
     TextView toCoordinates;
     ImageView fromImageView;
     ImageView toImageView;
+    ImageView fromIcon;
+    ImageView toIcon;
 
-    public static String currentFrom;
-    public static String currentTo;
+    public static String currentFromName;
+    public static String currentToName;
     public static LatLng currentFromLatLng;
     public static LatLng currentToLatLng;
 
@@ -66,6 +68,11 @@ public class LocationActivity extends AppCompatActivity
         toCoordinates = findViewById(R.id.coordinatesTo);
         fromImageView = findViewById(R.id.fromImageView);
         toImageView = findViewById(R.id.toImageView);
+        fromIcon = findViewById(R.id.fromIcon);
+        toIcon = findViewById(R.id.toIcon);
+
+        fromImageView.setVisibility(View.GONE);
+        toImageView.setVisibility(View.GONE);
 
         CardView fromCardView = findViewById(R.id.fromCardView);
         fromCardView.setOnClickListener(new View.OnClickListener()
@@ -128,6 +135,8 @@ public class LocationActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent)
     {
+//        TODO: When number of lines in texts (name or coordinates) are changed then static map image rendering is weird
+
         if(intent != null)
         {
             if(requestCode == FROM_LOCATION_REQUEST)
@@ -136,15 +145,16 @@ public class LocationActivity extends AppCompatActivity
                 fromLocation.setText(place.getName());
                 LatLng latLng = place.getLatLng();
                 fromCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
-                currentFrom = (String) place.getName();
+                currentFromName = (String) place.getName();
                 currentFromLatLng = latLng;
+                fromImageView.setVisibility(View.VISIBLE);
                 Picasso.get()
-                        .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
-                        .error(R.drawable.ic_location)
+                        .fit()
                         .centerCrop()
-                        .resize(fromImageView.getWidth(), fromImageView.getHeight())
                         .into(fromImageView);
+                fromIcon.setVisibility(View.GONE);
             }
             else if(requestCode == TO_LOCATION_REQUEST)
             {
@@ -152,15 +162,16 @@ public class LocationActivity extends AppCompatActivity
                 toLocation.setText(place.getName());
                 LatLng latLng = place.getLatLng();
                 toCoordinates.setText(String.format("%f, %f", latLng.latitude, latLng.longitude));
-                currentTo = (String) place.getName();
+                currentToName = (String) place.getName();
                 currentToLatLng = latLng;
+                toImageView.setVisibility(View.VISIBLE);
                 Picasso.get()
-                        .load(String.format("%s?center=%f,%f&zoom=18&size=640x640&sensor=false",
+                        .load(String.format("%s?center=%f,%f&zoom=18&size=400x400&sensor=false",
                                 getResources().getString(R.string.static_map_url), latLng.latitude, latLng.longitude))
-                        .error(R.drawable.ic_location)
+                        .fit()
                         .centerCrop()
-                        .resize(toImageView.getWidth(), toImageView.getHeight())
                         .into(toImageView);
+                toIcon.setVisibility(View.GONE);
             }
         }
     }
