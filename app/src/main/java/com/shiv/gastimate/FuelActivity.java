@@ -145,6 +145,9 @@ public class FuelActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Gets the html code of the AAA website and sends to parse
+     */
     @SuppressLint("DefaultLocale")
     void fuelAPI()
     {
@@ -190,6 +193,11 @@ public class FuelActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * Gets the gasprice from the html code of the AAA website
+     * @param response, html code
+     * @throws Exception, if cannot be passed, never happens most of the time
+     */
     @SuppressLint("SetTextI18n")
     void parse(String response) throws Exception
     {
@@ -201,7 +209,9 @@ public class FuelActivity extends AppCompatActivity
         setPriceText();
     }
 
-    //Called when set price button is checked
+    /**
+     * Called when set price button is checked
+     */
     @SuppressLint("DefaultLocale")
     void setPriceText()
     {
@@ -216,7 +226,9 @@ public class FuelActivity extends AppCompatActivity
         }
     }
 
-    //Overrides the toolbar back button
+    /**
+     * Overrides the toolbar back button
+     */
     @Override
     public boolean onSupportNavigateUp()
     {

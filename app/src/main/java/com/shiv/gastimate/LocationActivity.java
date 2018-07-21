@@ -106,6 +106,10 @@ public class LocationActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Opens up the PlacePicker UI
+     * @param requestCode, tells if from or to location
+     */
     private void openPlacePicker(int requestCode)
     {
         if((googleApiClient == null) || (!googleApiClient.isConnected()))
@@ -176,7 +180,10 @@ public class LocationActivity extends AppCompatActivity
         }
     }
 
-    //Overrides the toolbar back button
+    /**
+     * Overrides the toolbar back button
+     * @return
+     */
     @Override
     public boolean onSupportNavigateUp()
     {
@@ -184,6 +191,9 @@ public class LocationActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Starts the googleApiClient with onStart
+     */
     @Override
     protected void onStart()
     {
@@ -194,6 +204,10 @@ public class LocationActivity extends AppCompatActivity
         }
     }
 
+
+    /**
+     * Stops the googleApiClient with onStop
+     */
     @Override
     protected void onStop()
     {

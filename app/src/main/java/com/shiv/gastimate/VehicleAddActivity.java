@@ -20,6 +20,11 @@ public class VehicleAddActivity extends AppCompatActivity
     ConstraintLayout dbMain;
     ConstraintLayout cMain;
 
+    /**
+     * Called when activity is created
+     *
+     * @param savedInstanceState, previous state if exists
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -91,7 +96,10 @@ public class VehicleAddActivity extends AppCompatActivity
         });
     }
 
-    //Overrides the toolbar back button
+    /**
+     * Overrides the toolbar back button
+     * @return has to return true idk why
+     */
     @Override
     public boolean onSupportNavigateUp()
     {

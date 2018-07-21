@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +50,20 @@ public class Gastimate extends AppCompatActivity
     TextView gasText;
     ImageView dropDown;
 
+    View helpView;      //Just a view to animate in the CardView2 so that animate layout changes works there
+
+    ConstraintLayout directionsLayout;
+    Switch directionsToggle;
+
     double distance;        //in miles
     double time;            //in minutes
     double gas;
     double money;
 
+    /**
+     * Called when activity is created
+     * @param savedInstanceState, previous state if exists
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -73,6 +84,11 @@ public class Gastimate extends AppCompatActivity
         gasText = findViewById(R.id.gasText);
         dropDown = findViewById(R.id.dropDownSymbol);
 
+        helpView = findViewById(R.id.view);
+
+        directionsLayout = findViewById(R.id.directionsLayout);
+        directionsToggle = findViewById(R.id.directionsToggle);
+
         summaryDetails.setVisibility(View.GONE);
 
         distanceMatrixAPI();
@@ -84,11 +100,23 @@ public class Gastimate extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(Gastimate.this, MainActivity.class);
-                //Clearing the entire back stack and going back to MainActivity
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                finishAndRemoveTask();
+                if(!directionsToggle.isChecked())
+                {
+                    Intent intent = new Intent(Gastimate.this, MainActivity.class);
+                    //Clearing the entire back stack and going back to MainActivity
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finishAndRemoveTask();
+                }
+                else if(directionsToggle.isChecked())
+                {
+                    @SuppressLint("DefaultLocale") Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse(String.format("http://maps.google.com/maps?saddr=%f,%f&daddr=%f,%f",
+                                    currentFromLatLng.latitude, currentFromLatLng.longitude,
+                                    currentToLatLng.latitude, currentToLatLng.longitude)));
+                    startActivity(intent);
+                    directionsToggle.toggle();
+                }
             }
         });
 
@@ -100,17 +128,31 @@ public class Gastimate extends AppCompatActivity
                 if(summaryDetails.getVisibility() == View.VISIBLE)
                 {
                     summaryDetails.setVisibility(View.GONE);
+                    helpView.setVisibility(View.GONE);
                     dropDown.setRotation(0);
                 }
                 else if(summaryDetails.getVisibility() == View.GONE)
                 {
                     summaryDetails.setVisibility(View.VISIBLE);
+                    helpView.setVisibility(View.VISIBLE);
                     dropDown.setRotation(180);
                 }
             }
         });
+
+        directionsLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                directionsToggle.toggle();
+            }
+        });
     }
 
+    /**
+     * Calls the distance matrix api and sets the corresponding values
+     */
     @SuppressLint("DefaultLocale")
     void distanceMatrixAPI()
     {
@@ -172,6 +214,9 @@ public class Gastimate extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    /**
+     * If not drivable, then shows popup and goes back to LocationActivity, clearing the back stack
+     */
     void notDrivable()
     {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -197,6 +242,9 @@ public class Gastimate extends AppCompatActivity
         catch(WindowManager.BadTokenException e){}        //Called when Gastimate activity is closed
     }
 
+    /**
+     * Sets the values on screen
+     */
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     void setValues()
     {
@@ -222,6 +270,9 @@ public class Gastimate extends AppCompatActivity
         }
     }
 
+    /**
+     * Sets the trip summary
+     */
     @SuppressLint("DefaultLocale")
     void setSummary()
     {

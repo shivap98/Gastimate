@@ -7,7 +7,7 @@ package com.shiv.gastimate;
 public class Constants
 {
 
-    //Used for location and location search activites
+    //Used for location and location search activities
     public static final int FROM_LOCATION_REQUEST = 0;
     public static final int TO_LOCATION_REQUEST = 1;
 

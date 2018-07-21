@@ -66,7 +66,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    //Called when coming back here from location activity, scrolls back up
+    /**
+     * Called when coming back here from location activity, scrolls back up
+     */
     @Override
     protected void onPostResume()
     {
@@ -74,8 +76,12 @@ public class MainActivity extends AppCompatActivity
         vehiclesList.scrollToPosition(0);
     }
 
+    /**
+     * Prevent mishandling of the back button
+     */
     @Override
     public void onBackPressed()
     {
+        finish();
     }
 }
