@@ -83,7 +83,7 @@ public class FuelActivity extends AppCompatActivity
                     {
                         currentSetPrice = Double.parseDouble(priceInput.getText().toString());
                     }
-                    catch(Exception e)
+                    catch(NumberFormatException e)
                     {
                         currentSetPrice = currentPriceAPI;
                     }
@@ -121,10 +121,16 @@ public class FuelActivity extends AppCompatActivity
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     }catch(Exception e)
                     {
-                        Log.e("Enter Press", Arrays.toString(e.getStackTrace()));
+                        Log.e("Enter Press Error", Arrays.toString(e.getStackTrace()));
                     }
 
                     currentSetPrice = Double.parseDouble(priceInput.getText().toString());
+                    if(currentSetPrice > 20.0)
+                    {
+                        Toast.makeText(getApplicationContext(), "Price can't be more than 20 USD!", Toast.LENGTH_SHORT).show();
+                        priceInput.setText("");
+                        currentSetPrice = currentPriceAPI;
+                    }
                     setPriceText();
 
                     return true;
@@ -199,7 +205,7 @@ public class FuelActivity extends AppCompatActivity
      * @throws Exception, if cannot be passed, never happens most of the time
      */
     @SuppressLint("SetTextI18n")
-    void parse(String response) throws Exception
+    void parse(String response)
     {
         int index = response.indexOf("$");
         index++;
@@ -209,21 +215,14 @@ public class FuelActivity extends AppCompatActivity
         setPriceText();
     }
 
+    double currentVal;  //only used in this function to manage current TextView value
     /**
      * Called when set price button is checked
      */
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     void setPriceText()
     {
-        if(currentSetPrice <= 100.00)
-        {
-            currentSetPriceText.setText(String.format("%2.2f", currentSetPrice));
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "Price can't be more than 100 USD!", Toast.LENGTH_SHORT).show();
-            priceInput.setText("");
-        }
+        currentSetPriceText.setText("" + currentSetPrice);
     }
 
     /**
