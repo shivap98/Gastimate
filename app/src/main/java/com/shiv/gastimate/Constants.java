@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class Constants
 {
 
-    //Used for location and location search activities
+    //used for location and location search activities
     public static final int FROM_LOCATION_REQUEST = 0;
     public static final int TO_LOCATION_REQUEST = 1;
 
@@ -28,6 +28,12 @@ public class Constants
     //Duration for ValueAnimator
     static final int animationDuration = 1170;
 
+    //used for carQuery type
+    public static int YEAR = 0;
+    public static int MAKE = 1;
+    public static int MODEL = 2;
+    public static int TRIM = 3;
+    
     /**
      * Animates the given TextView
      * @param initialValue, the starting value of animation
