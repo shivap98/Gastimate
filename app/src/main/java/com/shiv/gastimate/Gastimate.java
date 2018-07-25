@@ -30,6 +30,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.shiv.gastimate.Constants.animateTextView;
@@ -186,7 +187,7 @@ public class Gastimate extends AppCompatActivity
 
                     setValues();
                 }
-                catch(Exception e)
+                catch(JSONException e)
                 {
                     if(response.contains("ZERO_RESULTS"))
                     {

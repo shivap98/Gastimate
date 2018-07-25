@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
@@ -122,9 +124,13 @@ public class LocationActivity extends AppCompatActivity
         {
             startActivityForResult(builder.build(LocationActivity.this), requestCode);
         }
-        catch(Exception e)
+        catch(GooglePlayServicesRepairableException e)
         {
-            Log.d("Places API", e.getMessage());
+            Log.e("Place Picker SDK", e.getMessage());
+        }
+        catch(GooglePlayServicesNotAvailableException e)
+        {
+            Log.e("Place Picker SDK", "Place Services not available " + e.getMessage());
         }
     }
 

@@ -19,8 +19,6 @@ import static com.shiv.gastimate.Constants.MOTORCYCLE;
 import static com.shiv.gastimate.Constants.NOT_TRACKING;
 import static com.shiv.gastimate.Constants.OTHER;
 
-//TODO: Change all Exception catching to specific exceptions
-
 public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;

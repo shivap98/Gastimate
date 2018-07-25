@@ -173,7 +173,7 @@ public class FuelActivity extends AppCompatActivity
                 {
                     parse(response);
                 }
-                catch(Exception e)
+                catch(NumberFormatException e)
                 {
                     Log.e("Fuel API", "Parsing Error");
                     Toast.makeText(getBaseContext(), "Parsing", Toast.LENGTH_SHORT).show();
@@ -203,12 +203,12 @@ public class FuelActivity extends AppCompatActivity
     }
 
     /**
-     * Gets the gasprice from the html code of the AAA website
+     * Gets the gas price from the html code of the AAA website
      * @param response, html code
-     * @throws Exception, if cannot be passed, never happens most of the time
+     * @throws NumberFormatException, if index is -1 and parseDouble can't work
      */
     @SuppressLint("SetTextI18n")
-    void parse(String response)
+    void parse(String response) throws NumberFormatException
     {
         int index = response.indexOf("$");
         index++;
