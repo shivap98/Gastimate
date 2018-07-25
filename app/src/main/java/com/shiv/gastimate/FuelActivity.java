@@ -16,9 +16,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,8 @@ public class FuelActivity extends AppCompatActivity
     Switch customFuelSwitch;
     TextView currentApiPriceText;
 
+    FrameLayout progressBarLayout;
+
     double currentPriceAPI;
     public static double currentSetPrice;
 
@@ -57,6 +62,7 @@ public class FuelActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fuel_activity);
 
+        progressBarLayout = findViewById(R.id.frameLayout);
         customFuelSwitch = findViewById(R.id.customFuelSwitch);
         textInputLayout = findViewById(R.id.textInputLayout);
         currentSetPriceText = findViewById(R.id.currentSetPrice);
@@ -209,6 +215,7 @@ public class FuelActivity extends AppCompatActivity
         currentPriceAPI = Double.parseDouble(response.substring(index, index+4));
         currentSetPrice = currentPriceAPI;
         animateTextView((float) 0.00, (float) currentSetPrice, currentApiPriceText);
+        progressBarLayout.setVisibility(View.GONE);
         setPriceText();
     }
 

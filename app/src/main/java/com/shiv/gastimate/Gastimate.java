@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ public class Gastimate extends AppCompatActivity
 
     View helpView;      //Just a view to animate in the CardView2 so that animate layout changes works there
 
+    FrameLayout progressBarLayout;
+
     ConstraintLayout directionsLayout;
     Switch directionsToggle;
 
@@ -70,6 +73,7 @@ public class Gastimate extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gastimate_activity);
+        progressBarLayout = findViewById(R.id.frameLayout);
 
         gasValue = findViewById(R.id.gasValue);
         moneyValue = findViewById(R.id.moneyValue);
@@ -249,6 +253,8 @@ public class Gastimate extends AppCompatActivity
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     void setValues()
     {
+        progressBarLayout.setVisibility(View.GONE);
+
         gas = distance/MainActivity.currentVehicle.mpg;
         animateTextView((float)0.00, (float) gas, gasValue);
 
