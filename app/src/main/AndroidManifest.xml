@@ -40,7 +40,7 @@
             android:name=".Gastimate"
             android:parentActivityName=".FuelActivity" />
         <activity
-            android:name=".VehicleAddActivity"
+            android:name=".AddVehicleActivity"
             android:parentActivityName=".MainActivity"/>
 
         <meta-data

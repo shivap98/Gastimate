@@ -150,7 +150,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/priceInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

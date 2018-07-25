@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,19 +30,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.Arrays;
 
-import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
-import static com.shiv.gastimate.LocationActivity.currentToLatLng;
+import static com.shiv.gastimate.Constants.animateTextView;
 
 public class FuelActivity extends AppCompatActivity
 {
     TextInputLayout textInputLayout;
     TextView currentSetPriceText;
-    EditText priceInput;
+    TextInputEditText priceInput;
     ConstraintLayout cToggle;
     ConstraintLayout cInput;
     Switch customFuelSwitch;
@@ -211,18 +208,17 @@ public class FuelActivity extends AppCompatActivity
         index++;
         currentPriceAPI = Double.parseDouble(response.substring(index, index+4));
         currentSetPrice = currentPriceAPI;
-        currentApiPriceText.setText(Double.toString(currentSetPrice));
+        animateTextView((float) 0.00, (float) currentSetPrice, currentApiPriceText);
         setPriceText();
     }
 
-    double currentVal;  //only used in this function to manage current TextView value
     /**
      * Called when set price button is checked
      */
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     void setPriceText()
     {
-        currentSetPriceText.setText("" + currentSetPrice);
+        animateTextView(Float.parseFloat(currentSetPriceText.getText().toString()), (float) currentSetPrice, currentSetPriceText);
     }
 
     /**

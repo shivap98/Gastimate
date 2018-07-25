@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import static com.shiv.gastimate.Constants.animateTextView;
 import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
 import static com.shiv.gastimate.LocationActivity.currentToLatLng;
 
@@ -249,12 +250,12 @@ public class Gastimate extends AppCompatActivity
     void setValues()
     {
         gas = distance/MainActivity.currentVehicle.mpg;
-        gasValue.setText(String.format("%.2f", gas));
+        animateTextView((float)0.00, (float) gas, gasValue);
 
         money = gas * FuelActivity.currentSetPrice;
-        moneyValue.setText(String.format("%.2f", money));
+        animateTextView((float)0.00, (float) money, moneyValue);
 
-        distanceValue.setText((String.format("%.2f", distance)));
+        animateTextView((float)0.00, (float) distance, distanceValue);
 
         if(time > 60)
         {

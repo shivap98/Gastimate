@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-public class VehicleAddActivity extends AppCompatActivity
+public class AddVehicleActivity extends AppCompatActivity
 {
     ConstraintLayout dbToggle;
     ConstraintLayout cToggle;
