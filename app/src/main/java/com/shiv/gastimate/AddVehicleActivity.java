@@ -123,6 +123,26 @@ public class AddVehicleActivity extends AppCompatActivity
         mpgInput = findViewById(R.id.mpgInput);
         capacityInput = findViewById(R.id.capacityInput);
 
+        setUiToggleListeners();
+        setSpinnerListeners();
+
+        carQueryAPI(YEAR);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                addCar();
+            }
+        });
+    }
+
+    /**
+     * Handles the listeners and toggles for DB and Custom cards
+     */
+    void setUiToggleListeners()
+    {
         dbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -178,9 +198,10 @@ public class AddVehicleActivity extends AppCompatActivity
                 cSwitch.toggle();
             }
         });
+    }
 
-        carQueryAPI(YEAR);
-
+    void setSpinnerListeners()
+    {
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -283,21 +304,16 @@ public class AddVehicleActivity extends AppCompatActivity
                         capacityErrorDialog();
                     }
                 }
+                else
+                {
+                    fabHandler();
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView)
             {
 
-            }
-        });
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                addCar();
             }
         });
     }
@@ -473,8 +489,7 @@ public class AddVehicleActivity extends AppCompatActivity
         fabHandler();
     }
 
-    //Outside function because used later to get trim and mpg value
-    JSONArray trimsArray;
+    JSONArray trimsArray;       //Outside function because used later to get trim and mpg value
     /**
      * Gets the range of the models available
      *
