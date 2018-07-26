@@ -5,15 +5,22 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -37,7 +44,7 @@ import static com.shiv.gastimate.Constants.MODEL;
 import static com.shiv.gastimate.Constants.NOT_TRACKING;
 import static com.shiv.gastimate.Constants.TRIM;
 import static com.shiv.gastimate.Constants.YEAR;
-import static com.shiv.gastimate.MainActivity.vehicles;
+import static com.shiv.gastimate.Constants.isEditTextEmpty;
 
 public class AddVehicleActivity extends AppCompatActivity
 {
@@ -47,6 +54,7 @@ public class AddVehicleActivity extends AppCompatActivity
     Switch cSwitch;
     ConstraintLayout dbMain;
     ConstraintLayout cMain;
+    FloatingActionButton floatingActionButton;
 
     TextInputEditText vehicleNameDB;
     SearchableSpinner yearSpinner;
@@ -54,8 +62,15 @@ public class AddVehicleActivity extends AppCompatActivity
     SearchableSpinner modelSpinner;
     SearchableSpinner trimSpinner;
 
+    TextInputEditText vehicleNameC;
+    TextInputEditText makeInput;
+    TextInputEditText modelInput;
+    TextInputEditText yearInput;
+    TextInputEditText mpgInput;
+    TextInputEditText capacityInput;
+
     int[] yearsLimit = new int[2];
-    ArrayList<Integer> years = new ArrayList<>();
+    ArrayList<String> years = new ArrayList<>();
     ArrayList<String> makes = new ArrayList<>();
     ArrayList<String> models = new ArrayList<>();
     ArrayList<String> trimDisplays = new ArrayList<>();
@@ -84,6 +99,9 @@ public class AddVehicleActivity extends AppCompatActivity
         cSwitch = findViewById(R.id.cSwitch);
         dbMain = findViewById(R.id.dbMain);
         cMain = findViewById(R.id.cMain);
+        floatingActionButton = findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.hide();
 
         dbSwitch.setChecked(true);
         cMain.setVisibility(View.GONE);
@@ -97,6 +115,13 @@ public class AddVehicleActivity extends AppCompatActivity
         modelSpinner.setVisibility(View.GONE);
         trimSpinner = findViewById(R.id.trimSpinner);
         trimSpinner.setVisibility(View.GONE);
+
+        vehicleNameC = findViewById(R.id.vehicleNameC);
+        makeInput = findViewById(R.id.makeInput);
+        modelInput = findViewById(R.id.modelInput);
+        yearInput = findViewById(R.id.yearInput);
+        mpgInput = findViewById(R.id.mpgInput);
+        capacityInput = findViewById(R.id.capacityInput);
 
         dbSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -113,6 +138,7 @@ public class AddVehicleActivity extends AppCompatActivity
                     dbMain.setVisibility(View.GONE);
                     cSwitch.setChecked(true);
                 }
+                fabHandler();
             }
         });
 
@@ -131,6 +157,7 @@ public class AddVehicleActivity extends AppCompatActivity
                     cMain.setVisibility(View.GONE);
                     dbSwitch.setChecked(true);
                 }
+                fabHandler();
             }
         });
 
@@ -162,9 +189,14 @@ public class AddVehicleActivity extends AppCompatActivity
                 makeSpinner.setVisibility(View.GONE);
                 modelSpinner.setVisibility(View.GONE);
                 trimSpinner.setVisibility(View.GONE);
+                fabHandler();
 
-                year = Integer.parseInt(yearSpinner.getSelectedItem().toString());
-                carQueryAPI(MAKE);
+                if(!(yearSpinner.getSelectedItem().toString()).equals("Set year"))
+                {
+                    year = Integer.parseInt(yearSpinner.getSelectedItem().toString());
+                    carQueryAPI(MAKE);
+                }
+
             }
 
             @Override
@@ -181,9 +213,13 @@ public class AddVehicleActivity extends AppCompatActivity
             {
                 modelSpinner.setVisibility(View.GONE);
                 trimSpinner.setVisibility(View.GONE);
+                fabHandler();
 
-                make = makeSpinner.getSelectedItem().toString();
-                carQueryAPI(MODEL);
+                if(!(makeSpinner.getSelectedItem().toString()).equals("Set make"))
+                {
+                    make = makeSpinner.getSelectedItem().toString();
+                    carQueryAPI(MODEL);
+                }
             }
 
             @Override
@@ -199,9 +235,13 @@ public class AddVehicleActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
                 trimSpinner.setVisibility(View.GONE);
+                fabHandler();
 
-                model = modelSpinner.getSelectedItem().toString();
-                carQueryAPI(TRIM);
+                if(!(modelSpinner.getSelectedItem().toString()).equals("Set model"))
+                {
+                    model = modelSpinner.getSelectedItem().toString();
+                    carQueryAPI(TRIM);
+                }
             }
 
             @Override
@@ -216,22 +256,33 @@ public class AddVehicleActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                try
+                if(!(trimSpinner.getSelectedItem().toString()).equals("Set variant"))
                 {
-                    JSONObject trimObject = trimsArray.getJSONObject(trimSpinner.getSelectedItemPosition());
-                    trim = trimObject.getString("model_trim");
-                    mpg = (2.35214583 * trimObject.getDouble("model_lkm_mixed"));       //km per litres into miles per gallon
-                    capacity = (0.264172 * trimObject.getDouble("model_fuel_cap_l"));   //litres to gallons
-                }
-                catch(JSONException e)
-                {
-                    trim = null;
-                    mpg = 0;
-                    Log.e("Spinner Parsing", e.getMessage());
-                }
+                    JSONObject trimObject = null;
+                    try
+                    {
+                        trimObject = trimsArray.getJSONObject(trimSpinner.getSelectedItemPosition()-1);     //-1 cause of Select Variant selection
+                        trim = trimObject.getString("model_trim");
+                        mpg = (2.35214583 * trimObject.getDouble("model_lkm_mixed"));       //km per litres into miles per gallon
+                    }
+                    catch(JSONException e)
+                    {
+                        trim = null;
+                        mpg = 0;
+                        Log.e("Spinner Parsing", "Trim and MPG Error " + e.getMessage());
+                    }
 
-                Vehicle v = new Vehicle(vehicleNameDB.getText().toString(),  make, model, year, mpg,capacity, NOT_TRACKING, 0, CAR);
-                Log.i("Vehicle Created", v.toString());
+                    try
+                    {
+                        capacity = (0.264172 * trimObject.getDouble("model_fuel_cap_l"));   //litres to gallons
+                        fabHandler();
+                    }
+                    catch(JSONException e)
+                    {
+                        Log.e("Spinner Parsing", "Capacity Error " + e.getMessage());
+                        capacityErrorDialog();
+                    }
+                }
             }
 
             @Override
@@ -241,7 +292,14 @@ public class AddVehicleActivity extends AppCompatActivity
             }
         });
 
-
+        floatingActionButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                addCar();
+            }
+        });
     }
 
     /**
@@ -338,6 +396,7 @@ public class AddVehicleActivity extends AppCompatActivity
     void parseYears(String response) throws JSONException
     {
         years.clear();
+        years.add("Set year");
         JSONObject mainObject = new JSONObject(response);
         JSONObject yearsObject = mainObject.getJSONObject("Years");
         yearsLimit[0] = yearsObject.getInt("min_year");
@@ -345,16 +404,18 @@ public class AddVehicleActivity extends AppCompatActivity
 
         for(int i = yearsLimit[1]; i >= yearsLimit[0]; i--)
         {
-            years.add(i);
+            years.add("" + i);
         }
 
-        ArrayAdapter<Integer> yearsSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
+        ArrayAdapter<String> yearsSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, years);
         yearSpinner.setAdapter(yearsSpinnerAdapter);
         yearSpinner.setVisibility(View.VISIBLE);
+        yearSpinner.setSelection(0, false);
 
         makeSpinner.setVisibility(View.GONE);
         modelSpinner.setVisibility(View.GONE);
         trimSpinner.setVisibility(View.GONE);
+        fabHandler();
     }
 
     /**
@@ -366,6 +427,7 @@ public class AddVehicleActivity extends AppCompatActivity
     void parseMakes(String response) throws JSONException
     {
         makes.clear();
+        makes.add("Set make");
         JSONObject mainObject = new JSONObject(response);
         JSONArray makesArray = mainObject.getJSONArray("Makes");
         for(int i = 0; i < makesArray.length(); i++)
@@ -377,9 +439,11 @@ public class AddVehicleActivity extends AppCompatActivity
         ArrayAdapter<String> makesSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, makes);
         makeSpinner.setAdapter(makesSpinnerAdapter);
         makeSpinner.setVisibility(View.VISIBLE);
+        makeSpinner.setSelection(0, false);
 
         modelSpinner.setVisibility(View.GONE);
         trimSpinner.setVisibility(View.GONE);
+        fabHandler();
     }
 
     /**
@@ -391,6 +455,7 @@ public class AddVehicleActivity extends AppCompatActivity
     void parseModels(String response) throws JSONException
     {
         models.clear();
+        models.add("Set model");
         JSONObject mainObject = new JSONObject(response);
         JSONArray modelsArray = mainObject.getJSONArray("Models");
         for(int i = 0; i < modelsArray.length(); i++)
@@ -402,8 +467,10 @@ public class AddVehicleActivity extends AppCompatActivity
         ArrayAdapter<String> modelsSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, models);
         modelSpinner.setAdapter(modelsSpinnerAdapter);
         modelSpinner.setVisibility(View.VISIBLE);
+        modelSpinner.setSelection(0, false);
 
         trimSpinner.setVisibility(View.GONE);
+        fabHandler();
     }
 
     //Outside function because used later to get trim and mpg value
@@ -417,6 +484,7 @@ public class AddVehicleActivity extends AppCompatActivity
     void parseTrims(String response) throws JSONException
     {
         trimDisplays.clear();
+        trimDisplays.add("Set variant");
         JSONObject mainObject = new JSONObject(response);
         trimsArray = mainObject.getJSONArray("Trims");
         for(int i = 0; i < trimsArray.length(); i++)
@@ -430,6 +498,101 @@ public class AddVehicleActivity extends AppCompatActivity
         ArrayAdapter<String> trimSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, trimDisplays);
         trimSpinner.setAdapter(trimSpinnerAdapter);
         trimSpinner.setVisibility(View.VISIBLE);
+        trimSpinner.setSelection(0, false);
+
+        fabHandler();
+    }
+
+    /**
+     * Shows error dialog with input for capacity
+     */
+    void capacityErrorDialog()
+    {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Capacity of the selected car not available!");
+        alert.setMessage("The database doesn't contain the fuel capacity for the selected car.\n" +
+                "Please input it manually (in gallons) or leave it at 0 if you don't wish to track fuel usage.");
+
+        final EditText input = new EditText(this);
+        input.setText("0.00");
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setRawInputType(Configuration.KEYBOARD_12KEY);
+        alert.setView(input);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int whichButton)
+            {
+                capacity = Double.parseDouble(input.getText().toString());
+                fabHandler();
+            }
+        });
+        alert.setCancelable(false);
+        alert.show();
+    }
+
+    /**
+     * Creates vehicle object for now
+     * but later, should add that vehicle object to the database
+     */
+    void addCar()
+    {
+        if(dbSwitch.isChecked())
+        {
+            if(isEditTextEmpty(vehicleNameDB))
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Name not set!");
+                alert.setMessage("Please give the vehicle a name.");
+                alert.setPositiveButton("Ok", null);
+                alert.show();
+            }
+            Vehicle v = new Vehicle(vehicleNameDB.getText().toString(),  make, model, year, mpg, capacity, NOT_TRACKING, 0, CAR);
+            Log.i("VehicleDB Created", v.toString());
+        }
+        //cSwitch.isChecked() is true if dbSwitch.isChecked() is not
+        else
+        {
+            if(isEditTextEmpty(vehicleNameC) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput) || isEditTextEmpty(yearInput)
+                    || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
+            {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Fields not set!");
+                alert.setMessage("One or more fields are empty!\nPlease fill them.");
+                alert.setPositiveButton("Ok", null);
+                alert.show();
+            }
+            else
+            {
+                Vehicle v = new Vehicle(vehicleNameC.getText().toString(), makeInput.getText().toString(),
+                        modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
+                        Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
+                        NOT_TRACKING, 0, CAR);
+                Log.i("VehicleC Created", v.toString());
+            }
+        }
+    }
+
+    /**
+     * Handles the visibility of the floatingActionButton
+     */
+    void fabHandler()
+    {
+        if(dbSwitch.isChecked())
+        {
+            if((trimSpinner.getVisibility() == View.VISIBLE) && (trimSpinner.getSelectedItemPosition() != 0))
+            {
+                floatingActionButton.show();
+            }
+            else
+            {
+                floatingActionButton.hide();
+            }
+        }
+        //cSwitch.isChecked() is true if dbSwitch.isChecked() is not
+        else
+        {
+            floatingActionButton.show();
+        }
     }
 
     /**

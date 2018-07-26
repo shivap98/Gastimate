@@ -54,9 +54,10 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/dbMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="376dp"
+            android:layout_height="match_parent"
             android:animateLayoutChanges="true"
+            android:paddingBottom="8dp"
             android:visibility="visible">
 
             <android.support.design.widget.TextInputLayout
@@ -80,7 +81,6 @@
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/yearSpinner"
-                app:hintText="Set year"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
@@ -93,7 +93,6 @@
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/makeSpinner"
-                app:hintText="Set make"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
@@ -105,7 +104,6 @@
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/modelSpinner"
-                app:hintText="Set model"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
@@ -117,10 +115,8 @@
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/trimSpinner"
-                app:hintText="Set trim"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="8dp"
@@ -182,6 +178,26 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:visibility="visible">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="14dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/capacityInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Fuel Capacity (gallons)"
+                    android:inputType="textCapWords" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout2"
@@ -260,12 +276,11 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="14dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"

@@ -6,7 +6,9 @@ package com.shiv.gastimate;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class Constants
@@ -33,12 +35,13 @@ public class Constants
     public static int MAKE = 1;
     public static int MODEL = 2;
     public static int TRIM = 3;
-    
+
     /**
      * Animates the given TextView
+     *
      * @param initialValue, the starting value of animation
-     * @param finalValue, the ending value of animation
-     * @param textView, the TextView to be animated
+     * @param finalValue,   the ending value of animation
+     * @param textView,     the TextView to be animated
      */
     @SuppressLint("DefaultLocale")
     public static void animateTextView(float initialValue, float finalValue, final TextView textView)
@@ -55,5 +58,20 @@ public class Constants
             }
         });
         valueAnimator.start();
+    }
+
+    /**
+     * @return true if editText is empty, false if otherwise
+     */
+    public static boolean isEditTextEmpty(EditText editText)
+    {
+        try
+        {
+            return TextUtils.isEmpty(editText.getText().toString());
+        }
+        catch(NullPointerException e)
+        {
+            return true;
+        }
     }
 }
