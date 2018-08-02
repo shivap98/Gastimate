@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:background="@color/white"
     tools:context=".AddVehicleActivity">
 
     <android.support.v7.widget.CardView
@@ -60,42 +61,23 @@
             android:paddingBottom="8dp"
             android:visibility="visible">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/vehicleNameDBInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="54dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/vehicleNameDB"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Vehicle Name"
-                    android:inputType="textCapWords" />
-            </android.support.design.widget.TextInputLayout>
-
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/yearSpinner"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="64dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vehicleNameDBInput" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/makeSpinner"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +88,7 @@
                 android:id="@+id/modelSpinner"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +99,7 @@
                 android:id="@+id/trimSpinner"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -177,26 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:visibility="visible">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="54dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/vehicleNameC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Vehicle Name"
-                    android:inputType="textCapWords" />
-            </android.support.design.widget.TextInputLayout>
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout4"
@@ -204,17 +167,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="14dp"
+                android:layout_marginTop="54dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/makeInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Make"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -233,7 +199,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Model"
-                    android:inputType="textCapWords" />
+                    android:inputType="textCapWords"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -252,7 +220,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Year"
-                    android:inputType="textCapWords" />
+                    android:inputType="number|numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -271,7 +241,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Miles per gallon"
-                    android:inputType="textCapWords" />
+                    android:inputType="number|numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -291,7 +263,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Fuel Capacity (gallons)"
-                    android:inputType="textCapWords" />
+                    android:inputType="number|numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
         </android.support.constraint.ConstraintLayout>

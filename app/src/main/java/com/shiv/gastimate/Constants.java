@@ -6,7 +6,14 @@ package com.shiv.gastimate;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -73,5 +80,60 @@ public class Constants
         {
             return true;
         }
+    }
+
+    /**
+     *
+     * @param context, where the dialog is shown
+     * @param title, dialog title
+     * @param description, dialog description
+     * @param hint, input text hint
+     * @param cancelable, doh
+     * @param numberInput, doh
+     * @param callBack, object with the function to be called after hitting ok
+     */
+    public static void textPrompt(Context context, String title, String description, String hint, boolean cancelable, boolean numberInput, final CallBack callBack)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptsView = layoutInflater.inflate(R.layout.text_prompt, null);
+        final TextInputEditText input;
+        if(numberInput)
+        {
+            input = promptsView.findViewById(R.id.inputNumbers);
+            TextInputLayout toHide = promptsView.findViewById(R.id.inputTextLayout);
+            toHide.setVisibility(View.GONE);
+        }
+        else
+        {
+            input = promptsView.findViewById(R.id.inputText);
+            TextInputLayout toHide = promptsView.findViewById(R.id.inputNumberLayout);
+            toHide.setVisibility(View.GONE);
+        }
+        input.setHint(hint);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setView(promptsView)
+                .setTitle(title)
+                .setMessage(description)
+                .setCancelable(cancelable)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                callBack.execute(input.getText().toString());
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    /**
+     * Interface so that object with function can be sent as parameter
+     */
+    public interface CallBack
+    {
+        void execute(String answer);
     }
 }
