@@ -58,6 +58,7 @@ public class AddVehicleActivity extends AppCompatActivity
     SearchableSpinner modelSpinner;
     SearchableSpinner trimSpinner;
 
+    TextInputEditText nameInput;
     TextInputEditText makeInput;
     TextInputEditText modelInput;
     TextInputEditText yearInput;
@@ -95,9 +96,6 @@ public class AddVehicleActivity extends AppCompatActivity
         cMain = findViewById(R.id.cMain);
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
-        floatingActionButton.hide();
-
-        dbSwitch.setChecked(true);      //Because DBMain is visible
 
         yearSpinner = findViewById(R.id.yearSpinner);
         yearSpinner.setVisibility(View.GONE);
@@ -108,6 +106,7 @@ public class AddVehicleActivity extends AppCompatActivity
         trimSpinner = findViewById(R.id.trimSpinner);
         trimSpinner.setVisibility(View.GONE);
 
+        nameInput = findViewById(R.id.nameInput);
         makeInput = findViewById(R.id.makeInput);
         modelInput = findViewById(R.id.modelInput);
         yearInput = findViewById(R.id.yearInput);
@@ -116,6 +115,9 @@ public class AddVehicleActivity extends AppCompatActivity
 
         setUiToggleListeners();
         setSpinnerListeners();
+
+        floatingActionButton.hide();
+        dbSwitch.setChecked(true);      //Because DBMain is visible
 
         carQueryAPI(YEAR);
 
@@ -143,11 +145,13 @@ public class AddVehicleActivity extends AppCompatActivity
                 {
                     dbMain.setVisibility(View.VISIBLE);
                     cSwitch.setChecked(false);
+                    floatingActionButton.setImageResource(R.drawable.ic_arrow_forward);
                 }
                 else
                 {
                     dbMain.setVisibility(View.GONE);
                     cSwitch.setChecked(true);
+                    floatingActionButton.setImageResource(R.drawable.ic_check);
                 }
                 fabHandler();
             }
@@ -277,11 +281,9 @@ public class AddVehicleActivity extends AppCompatActivity
                     }
                     catch(JSONException e)
                     {
-                        mpg = 0;
-                        capacity = 0;
-
-                        //TODO: Get both values from dialog
                         Log.e("Spinner Parsing", "Trim Error " + e.getMessage());
+                        mpg = 0.0;
+                        capacity = 0.0;
                     }
 
                     try
@@ -291,18 +293,7 @@ public class AddVehicleActivity extends AppCompatActivity
                     catch(JSONException | NullPointerException e)
                     {
                         Log.e("Spinner Parsing", "MPG Error " + e.getMessage());
-
-                        //Get MPG from dialog
-
-                        textPrompt(AddVehicleActivity.this, "MPG not available", "MPG for this vehicle is not in the database.\n" +
-                                "Please enter it manually.", "Miles Per Gallon", false, true, new CallBack()
-                        {
-                            @Override
-                            public void execute(String answer)
-                            {
-                                mpg = Double.parseDouble(answer);
-                            }
-                        });
+                        mpg = 0.0;
                     }
 
                     try
@@ -312,22 +303,9 @@ public class AddVehicleActivity extends AppCompatActivity
                     catch(JSONException | NullPointerException e)
                     {
                         Log.e("Spinner Parsing", "Capacity Error " + e.getMessage());
-
-                        //Get Capacity from dialog
-
-                        textPrompt(AddVehicleActivity.this,"Capacity not available!", "The fuel capacity for this vehicle is not in the database.\n" +
-                                "Please enter it manually if you want to track fuel usage otherwise leave it at 0",
-                                "Capacity (in gallons)", false, true, new CallBack()
-                        {
-                            @Override
-                            public void execute(String answer)
-                            {
-                                capacity = Double.parseDouble(answer);
-                            }
-                        });
+                        capacity = 0.0;
                     }
                     fabHandler();
-
                 }
                 else
                 {
@@ -547,19 +525,19 @@ public class AddVehicleActivity extends AppCompatActivity
      * Creates vehicle object for now
      * but later, should add that vehicle object to the database
      */
+    @SuppressLint("SetTextI18n")
     void addCar()
     {
         if(dbSwitch.isChecked())
         {
-            //Show name popup first
-            Vehicle v = new Vehicle("Sample Name",  make, model, year, mpg, capacity, NOT_TRACKING, 0, CAR);
-            Log.i("VehicleDB Created", v.toString());
+            spinnerToEdit();
+            dbSwitch.toggle();
         }
         //cSwitch.isChecked() is true if dbSwitch.isChecked() is not
         else
         {
-            if(isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput) || isEditTextEmpty(yearInput)
-                    || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
+            if(isEditTextEmpty(nameInput) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput)
+                    || isEditTextEmpty(yearInput) || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
             {
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("Fields not set!");
@@ -569,8 +547,8 @@ public class AddVehicleActivity extends AppCompatActivity
             }
             else
             {
-                //Show name popup first
-                Vehicle v = new Vehicle("Sample Name", makeInput.getText().toString(),
+                //Check if name exists in db first
+                Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
                         modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
                         Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
                         NOT_TRACKING, 0, CAR);
@@ -600,6 +578,18 @@ public class AddVehicleActivity extends AppCompatActivity
         {
             floatingActionButton.show();
         }
+    }
+
+    /**
+     * Sends the values from spinner to the edit text
+     */
+    void spinnerToEdit()
+    {
+        makeInput.setText(makeSpinner.getSelectedItem().toString());
+        modelInput.setText(modelSpinner.getSelectedItem().toString());
+        yearInput.setText(yearSpinner.getSelectedItem().toString());
+        mpgInput.setText("" + mpg);
+        capacityInput.setText("" + capacity);
     }
 
     /**
