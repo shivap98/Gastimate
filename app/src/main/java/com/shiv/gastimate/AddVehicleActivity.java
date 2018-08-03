@@ -5,7 +5,6 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
@@ -33,15 +32,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.shiv.gastimate.Constants.CAR;
-import static com.shiv.gastimate.Constants.MAKE;
-import static com.shiv.gastimate.Constants.MODEL;
-import static com.shiv.gastimate.Constants.NOT_TRACKING;
-import static com.shiv.gastimate.Constants.TRIM;
-import static com.shiv.gastimate.Constants.YEAR;
-import static com.shiv.gastimate.Constants.isEditTextEmpty;
-import static com.shiv.gastimate.Constants.CallBack;
-import static com.shiv.gastimate.Constants.textPrompt;
+import static com.shiv.gastimate.Helper.CAR;
+import static com.shiv.gastimate.Helper.MAKE;
+import static com.shiv.gastimate.Helper.MODEL;
+import static com.shiv.gastimate.Helper.NOT_TRACKING;
+import static com.shiv.gastimate.Helper.TRIM;
+import static com.shiv.gastimate.Helper.YEAR;
+import static com.shiv.gastimate.Helper.isEditTextEmpty;
+import static com.shiv.gastimate.Helper.showPrompt;
 
 public class AddVehicleActivity extends AppCompatActivity
 {
@@ -278,6 +276,26 @@ public class AddVehicleActivity extends AppCompatActivity
                     try
                     {
                         trimObject = trimsArray.getJSONObject(trimSpinner.getSelectedItemPosition()-1);     //-1 cause of Select Variant selection
+
+                        try
+                        {
+                            mpg = (2.35214583 * trimObject.getDouble("model_lkm_mixed"));       //km per litres into miles per gallon
+                        }
+                        catch(JSONException e)
+                        {
+                            Log.e("Spinner Parsing", "MPG Error " + e.getMessage());
+                            mpg = 0.0;
+                        }
+
+                        try
+                        {
+                            capacity = (0.264172 * trimObject.getDouble("model_fuel_cap_l"));   //litres to gallons
+                        }
+                        catch(JSONException e)
+                        {
+                            Log.e("Spinner Parsing", "Capacity Error " + e.getMessage());
+                            capacity = 0.0;
+                        }
                     }
                     catch(JSONException e)
                     {
@@ -286,25 +304,6 @@ public class AddVehicleActivity extends AppCompatActivity
                         capacity = 0.0;
                     }
 
-                    try
-                    {
-                        mpg = (2.35214583 * trimObject.getDouble("model_lkm_mixed"));       //km per litres into miles per gallon
-                    }
-                    catch(JSONException | NullPointerException e)
-                    {
-                        Log.e("Spinner Parsing", "MPG Error " + e.getMessage());
-                        mpg = 0.0;
-                    }
-
-                    try
-                    {
-                        capacity = (0.264172 * trimObject.getDouble("model_fuel_cap_l"));   //litres to gallons
-                    }
-                    catch(JSONException | NullPointerException e)
-                    {
-                        Log.e("Spinner Parsing", "Capacity Error " + e.getMessage());
-                        capacity = 0.0;
-                    }
                     fabHandler();
                 }
                 else
@@ -324,7 +323,7 @@ public class AddVehicleActivity extends AppCompatActivity
     /**
      * Gets the results from the carQueryAPI
      *
-     * @param type, tells if year, make, model or trim, check Constants
+     * @param type, tells if year, make, model or trim, check Helper
      */
     void carQueryAPI(final int type)
     {
@@ -539,20 +538,24 @@ public class AddVehicleActivity extends AppCompatActivity
             if(isEditTextEmpty(nameInput) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput)
                     || isEditTextEmpty(yearInput) || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
             {
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.setTitle("Fields not set!");
-                alert.setMessage("One or more fields are empty!\nPlease fill them.");
-                alert.setPositiveButton("Ok", null);
-                alert.show();
+                showPrompt(AddVehicleActivity.this, "Fields not set!", "One or more fields are empty!\nPlease fill them.");
             }
             else
             {
-                //Check if name exists in db first
-                Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
-                        modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
-                        Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
-                        NOT_TRACKING, 0, CAR);
-                Log.i("VehicleC Created", v.toString());
+                if(Double.parseDouble(mpgInput.getText().toString()) == 0.0)
+                {
+                    showPrompt(AddVehicleActivity.this, "MPG is is zero", "If you set the MPG as 0, the app can't track the " +
+                            "gas needed for any trip where this vehicle is used.\nPlease set the MPG value manually.");
+                }
+                else
+                {
+                    //Check if name exists in db first
+                    Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
+                            modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
+                            Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
+                            NOT_TRACKING, 0, CAR);
+                    Log.i("VehicleC Created", v.toString());
+                }
             }
         }
     }

@@ -16,12 +16,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +32,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.Arrays;
 
-import static com.shiv.gastimate.Constants.animateTextView;
+import static com.shiv.gastimate.Helper.animateTextView;
 
 public class FuelActivity extends AppCompatActivity
 {

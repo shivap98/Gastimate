@@ -14,10 +14,10 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import static com.shiv.gastimate.Constants.CAR;
-import static com.shiv.gastimate.Constants.MOTORCYCLE;
-import static com.shiv.gastimate.Constants.NOT_TRACKING;
-import static com.shiv.gastimate.Constants.OTHER;
+import static com.shiv.gastimate.Helper.CAR;
+import static com.shiv.gastimate.Helper.MOTORCYCLE;
+import static com.shiv.gastimate.Helper.NOT_TRACKING;
+import static com.shiv.gastimate.Helper.OTHER;
 
 public class MainActivity extends AppCompatActivity
 {

@@ -33,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.shiv.gastimate.Constants.animateTextView;
+import static com.shiv.gastimate.Helper.animateTextView;
 import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
 import static com.shiv.gastimate.LocationActivity.currentToLatLng;
 

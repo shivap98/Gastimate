@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static com.shiv.gastimate.Constants.MOTORCYCLE;
-import static com.shiv.gastimate.Constants.OTHER;
+import static com.shiv.gastimate.Helper.MOTORCYCLE;
+import static com.shiv.gastimate.Helper.OTHER;
 
 public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {

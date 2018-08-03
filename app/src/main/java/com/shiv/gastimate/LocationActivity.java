@@ -24,8 +24,8 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
-import static com.shiv.gastimate.Constants.FROM_LOCATION_REQUEST;
-import static com.shiv.gastimate.Constants.TO_LOCATION_REQUEST;
+import static com.shiv.gastimate.Helper.FROM_LOCATION_REQUEST;
+import static com.shiv.gastimate.Helper.TO_LOCATION_REQUEST;
 
 public class LocationActivity extends AppCompatActivity
 {

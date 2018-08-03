@@ -18,7 +18,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Constants
+public class Helper
 {
 
     //used for location and location search activities
@@ -92,10 +92,10 @@ public class Constants
      * @param numberInput, doh
      * @param callBack, object with the function to be called after hitting ok
      */
-    public static void textPrompt(Context context, String title, String description, String hint, boolean cancelable, boolean numberInput, final CallBack callBack)
+    public static void showInputPrompt(Context context, String title, String description, String hint, boolean cancelable, boolean numberInput, final CallBack callBack)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View promptsView = layoutInflater.inflate(R.layout.text_prompt, null);
+        View promptsView = layoutInflater.inflate(R.layout.input_prompt, null);
         final TextInputEditText input;
         if(numberInput)
         {
@@ -127,6 +127,21 @@ public class Constants
                         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    /**
+     * Shows dialog with simple title and message
+     * @param context, where th dialog is displayed
+     * @param title, title of dialog
+     * @param message, message of dialog
+     */
+    public static void showPrompt(Context context, String title, String message)
+    {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setTitle(title);
+        alert.setMessage(message);
+        alert.setPositiveButton("Ok", null);
+        alert.show();
     }
 
     /**
