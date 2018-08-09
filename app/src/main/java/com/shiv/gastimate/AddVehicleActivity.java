@@ -114,7 +114,7 @@ public class AddVehicleActivity extends AppCompatActivity
         setUiToggleListeners();
         setSpinnerListeners();
 
-        floatingActionButton.hide();
+        floatingActionButton.hide();    //Because we have yet to select from the spinners
         dbSwitch.setChecked(true);      //Because DBMain is visible
 
         carQueryAPI(YEAR);
