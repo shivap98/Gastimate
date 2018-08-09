@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -69,11 +70,18 @@ public class AddVehicleActivity extends AppCompatActivity
     ArrayList<String> models = new ArrayList<>();
     ArrayList<String> trimDisplays = new ArrayList<>();
 
+    ImageView imageType;
+    ImageView imageCar;
+    ImageView imageMotorcycle;
+    ImageView imageOther;
+    ConstraintLayout typeSelectLayout;
+
     int year;
     String make;
     String model;
     double mpg;
     double capacity;
+    int type = 0;
 
     /**
      * Called when activity is created
@@ -94,7 +102,6 @@ public class AddVehicleActivity extends AppCompatActivity
         cMain = findViewById(R.id.cMain);
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
-
         yearSpinner = findViewById(R.id.yearSpinner);
         yearSpinner.setVisibility(View.GONE);
         makeSpinner = findViewById(R.id.makeSpinner);
@@ -111,8 +118,15 @@ public class AddVehicleActivity extends AppCompatActivity
         mpgInput = findViewById(R.id.mpgInput);
         capacityInput = findViewById(R.id.capacityInput);
 
+        imageType = findViewById(R.id.imageType);
+        imageCar = findViewById(R.id.imageCar);
+        imageMotorcycle = findViewById(R.id.imageMotorcycle);
+        imageOther = findViewById(R.id.imageOther);
+        typeSelectLayout = findViewById(R.id.typeSelectLayout);
+
         setUiToggleListeners();
         setSpinnerListeners();
+        setTypeSelectListeners();
 
         floatingActionButton.hide();    //Because we have yet to select from the spinners
         dbSwitch.setChecked(true);      //Because DBMain is visible
@@ -193,6 +207,9 @@ public class AddVehicleActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Handles the listeners and toggles for the DB spinners
+     */
     void setSpinnerListeners()
     {
         yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -275,7 +292,7 @@ public class AddVehicleActivity extends AppCompatActivity
                     JSONObject trimObject = null;
                     try
                     {
-                        trimObject = trimsArray.getJSONObject(trimSpinner.getSelectedItemPosition()-1);     //-1 cause of Select Variant selection
+                        trimObject = trimsArray.getJSONObject(trimSpinner.getSelectedItemPosition() - 1);     //-1 cause of Select Variant selection
 
                         try
                         {
@@ -316,6 +333,61 @@ public class AddVehicleActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> adapterView)
             {
 
+            }
+        });
+    }
+
+    /**
+     * Handles the listeners and toggles for the type selector in Custom card
+     */
+    void setTypeSelectListeners()
+    {
+        imageType.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(typeSelectLayout.getVisibility() == View.GONE)
+                {
+                    typeSelectLayout.setVisibility(View.VISIBLE);
+                }
+                else if(typeSelectLayout.getVisibility() == View.VISIBLE)
+                {
+                    typeSelectLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        imageCar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type = 0;
+                typeSelectLayout.setVisibility(View.GONE);
+                imageType.setImageResource(R.drawable.ic_car);
+            }
+        });
+
+        imageMotorcycle.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type = 1;
+                typeSelectLayout.setVisibility(View.GONE);
+                imageType.setImageResource(R.drawable.ic_motorcycle);
+            }
+        });
+
+        imageOther.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type = 2;
+                typeSelectLayout.setVisibility(View.GONE);
+                imageType.setImageResource(R.drawable.ic_bus);
             }
         });
     }
@@ -402,7 +474,7 @@ public class AddVehicleActivity extends AppCompatActivity
 
         //Adding the StringRequest to the queue so that it is sent
         requestQueue.add(stringRequest);
-        Log.i("Volley URL: " , url.toString());
+        Log.i("Volley URL: ", url.toString());
     }
 
     /**
@@ -492,6 +564,7 @@ public class AddVehicleActivity extends AppCompatActivity
     }
 
     JSONArray trimsArray;       //Outside function because used later to get trim and mpg value
+
     /**
      * Gets the range of the models available
      *
@@ -553,7 +626,7 @@ public class AddVehicleActivity extends AppCompatActivity
                     Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
                             modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
                             Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
-                            NOT_TRACKING, 0, CAR);
+                            NOT_TRACKING, 0, type);
                     Log.i("VehicleC Created", v.toString());
                 }
             }
