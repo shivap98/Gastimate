@@ -7,11 +7,14 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
+    <!--clipToPadding(false) allows the RecyclerView to overlap the padding when scrolling-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/vehiclesList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="4dp"
+        android:clipToPadding="false"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:background="@color/white"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
