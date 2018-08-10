@@ -151,4 +151,20 @@ public class Helper
     {
         void execute(String answer);
     }
+
+    /**
+     * Toggles visibility
+     * @param view, view whose visibility needs to be toggled
+     */
+    void toggleVisibility(View view)
+    {
+        if(view.getVisibility() == View.VISIBLE)
+        {
+            view.setVisibility(View.GONE);
+        }
+        else if(view.getVisibility() == View.GONE)
+        {
+            view.setVisibility(View.VISIBLE);
+        }
+    }
 }

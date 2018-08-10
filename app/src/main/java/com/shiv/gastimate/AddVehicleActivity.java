@@ -5,6 +5,10 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
@@ -622,12 +626,48 @@ public class AddVehicleActivity extends AppCompatActivity
                 }
                 else
                 {
-                    //Check if name exists in db first
-                    Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
+                    final Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
                             modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
                             Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
                             NOT_TRACKING, 0, type);
                     Log.i("VehicleC Created", v.toString());
+
+                    //Creating alert dialog
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setMessage("Add Vehicle?");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            try
+                            {
+                                //Adding object to SQL
+                                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                                vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
+                                        "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
+                                //Setting up string values to add to the table
+                                String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
+                                        + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
+                                vehicleDB.execSQL("INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values);
+                                vehicleDB.close();
+
+                                Log.i("VehicleC", "Added to DB");
+                            }
+                            catch(SQLiteConstraintException e)
+                            {
+                                Log.e("VehicleC SQL", e.getMessage());
+                                showPrompt(AddVehicleActivity.this, "Name already exists!", "Please change the name of the vehicle\n"
+                                        + e.getMessage());
+                            }
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id) {}
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
             }
         }
