@@ -653,6 +653,7 @@ public class AddVehicleActivity extends AppCompatActivity
                                 vehicleDB.close();
 
                                 Log.i("VehicleC", "Added to DB");
+                                MainActivity.dbChanged = true;
                             }
                             catch(SQLiteConstraintException e)
                             {

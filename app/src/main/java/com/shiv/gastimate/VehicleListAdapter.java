@@ -96,6 +96,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         view.vehicleName.setVisibility(View.GONE);
 
         view.vehicleNameText.setText(String.format("Name: %s", vehicle.name));
+        view.carText.setText(String.format("%s %s %d", vehicle.make, vehicle.model, vehicle.year));
         view.mpgText.setText(String.format("Miles per Gallon: %.2f mpg", vehicle.mpg));
         view.capacityText.setText(String.format("Capacity: %.2f gal", vehicle.capacity));
 

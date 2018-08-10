@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity
     public static ArrayList<Vehicle> vehicles;
     public static Vehicle currentVehicle;
 
+    public static boolean dbChanged;
+
     /**
      * Called when activity is created
      *
@@ -105,8 +107,11 @@ public class MainActivity extends AppCompatActivity
         }
         catch(Exception e)
         {
+            Log.e("Reading DB", e.getMessage());
             return;
         }
+
+        dbChanged = false;
     }
 
     /**
@@ -116,7 +121,10 @@ public class MainActivity extends AppCompatActivity
     protected void onPostResume()
     {
         super.onPostResume();
-        readVehicles();
+        if(dbChanged)
+        {
+            readVehicles();
+        }
         vehiclesList.scrollToPosition(0);
     }
 
