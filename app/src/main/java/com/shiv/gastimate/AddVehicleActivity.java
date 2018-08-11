@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -145,7 +146,15 @@ public class AddVehicleActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                addCar();
+                if(dbSwitch.isChecked())
+                {
+                    spinnerToEdit();
+                    dbSwitch.toggle();
+                }
+                else
+                {
+                    addCar();
+                }
             }
         });
     }
@@ -594,78 +603,72 @@ public class AddVehicleActivity extends AppCompatActivity
     }
 
     /**
-     * Creates vehicle object for now
-     * but later, should add that vehicle object to the database
+     * Adds vehicle to database
      */
     @SuppressLint("SetTextI18n")
     void addCar()
     {
-        if(dbSwitch.isChecked())
+        if(isEditTextEmpty(nameInput) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput)
+                || isEditTextEmpty(yearInput) || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
         {
-            spinnerToEdit();
-            dbSwitch.toggle();
+            showPrompt(AddVehicleActivity.this, "Fields not set!", "One or more fields are empty!\nPlease fill them.");
         }
-        //cSwitch.isChecked() is true if dbSwitch.isChecked() is not
         else
         {
-            if(isEditTextEmpty(nameInput) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput)
-                    || isEditTextEmpty(yearInput) || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
+            if(Double.parseDouble(mpgInput.getText().toString()) == 0.0)
             {
-                showPrompt(AddVehicleActivity.this, "Fields not set!", "One or more fields are empty!\nPlease fill them.");
+                showPrompt(AddVehicleActivity.this, "MPG is is zero", "If you set the MPG as 0, the app can't track the " +
+                        "gas needed for any trip where this vehicle is used.\nPlease set the MPG value manually.");
             }
             else
             {
-                if(Double.parseDouble(mpgInput.getText().toString()) == 0.0)
-                {
-                    showPrompt(AddVehicleActivity.this, "MPG is is zero", "If you set the MPG as 0, the app can't track the " +
-                            "gas needed for any trip where this vehicle is used.\nPlease set the MPG value manually.");
-                }
-                else
-                {
-                    final Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
-                            modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
-                            Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
-                            NOT_TRACKING, 0, type);
-                    Log.i("VehicleC Created", v.toString());
+                final Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
+                        modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
+                        Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
+                        NOT_TRACKING, 0, type);
+                Log.i("VehicleC Created", v.toString());
 
-                    //Creating alert dialog
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                    alertDialogBuilder.setMessage("Add Vehicle?");
-                    alertDialogBuilder.setCancelable(false);
-                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                //Creating alert dialog
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Add Vehicle?");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
                     {
-                        public void onClick(DialogInterface dialog, int id)
+                        try
                         {
-                            try
-                            {
-                                //Adding object to SQL
-                                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                                vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
-                                        "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
-                                //Setting up string values to add to the table
-                                String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
-                                        + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
-                                vehicleDB.execSQL("INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values);
-                                vehicleDB.close();
+                            //Adding object to SQL
+                            SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                            vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
+                                    "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
+                            //Setting up string values to add to the table
+                            String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
+                                    + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
+                            String query = "INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values;
+                            Log.i("Vehicle Add Query", query);
+                            vehicleDB.execSQL(query);
+                            vehicleDB.close();
 
-                                Log.i("VehicleC", "Added to DB");
-                                MainActivity.dbChanged = true;
-                            }
-                            catch(SQLiteConstraintException e)
-                            {
-                                Log.e("VehicleC SQL", e.getMessage());
-                                showPrompt(AddVehicleActivity.this, "Name already exists!", "Please change the name of the vehicle\n"
-                                        + e.getMessage());
-                            }
+                            Log.i("VehicleC", "Added to DB");
+                            MainActivity.dbChanged = true;
                         }
-                    });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+                        catch(SQLiteConstraintException e)
+                        {
+                            Log.e("VehicleC SQL", e.getMessage());
+                            showPrompt(AddVehicleActivity.this, "Name already exists!", "Please change the name of the vehicle\n"
+                                    + e.getMessage());
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
                     {
-                        public void onClick(DialogInterface dialog, int id) {}
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         }
     }
@@ -715,5 +718,14 @@ public class AddVehicleActivity extends AppCompatActivity
     {
         onBackPressed();
         return true;
+    }
+
+    /**
+     * Prevent mishandling of the back button
+     */
+    @Override
+    public void onBackPressed()
+    {
+        finish();
     }
 }

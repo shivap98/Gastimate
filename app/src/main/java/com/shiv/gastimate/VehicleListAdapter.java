@@ -56,7 +56,6 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @Override
         public void onClick(View view)
         {
-            Intent intent = new Intent(view.getContext(), LocationActivity.class);
             for(int i=0; i<MainActivity.vehicles.size(); i++)
             {
                 if(vehicles.get(i).name.equals(vehicleName.getText().toString()))
@@ -64,6 +63,15 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     MainActivity.currentVehicle = MainActivity.vehicles.get(i);
                     break;
                 }
+            }
+            Intent intent;
+            if(!MainActivity.editMode)
+            {
+                intent = new Intent(view.getContext(), LocationActivity.class);
+            }
+            else
+            {
+                intent = new Intent(view.getContext(), EditVehicle.class);
             }
             view.getContext().startActivity(intent);
         }

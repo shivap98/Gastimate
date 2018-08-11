@@ -28,7 +28,6 @@ import static com.shiv.gastimate.Helper.OTHER;
 public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;
-    VehicleListAdapter vehicleListAdapter;
 
     public static ArrayList<Vehicle> vehicles;
     public static Vehicle currentVehicle;
@@ -174,7 +173,7 @@ public class MainActivity extends AppCompatActivity
         {
             readVehicles();
         }
-        if(fabOpen)
+        if(fabOpen || editMode)
         {
             mainButton.callOnClick();
         }
