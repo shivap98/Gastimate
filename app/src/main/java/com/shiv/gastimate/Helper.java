@@ -156,7 +156,7 @@ public class Helper
      * Toggles visibility
      * @param view, view whose visibility needs to be toggled
      */
-    void toggleVisibility(View view)
+    public static void toggleVisibility(View view)
     {
         if(view.getVisibility() == View.VISIBLE)
         {

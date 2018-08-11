@@ -45,6 +45,9 @@ import static com.shiv.gastimate.Helper.TRIM;
 import static com.shiv.gastimate.Helper.YEAR;
 import static com.shiv.gastimate.Helper.isEditTextEmpty;
 import static com.shiv.gastimate.Helper.showPrompt;
+import static com.shiv.gastimate.Helper.toggleVisibility;
+
+//TODO: Add loading bar for spinner loading
 
 public class AddVehicleActivity extends AppCompatActivity
 {
@@ -128,12 +131,12 @@ public class AddVehicleActivity extends AppCompatActivity
         imageOther = findViewById(R.id.imageOther);
         typeSelectLayout = findViewById(R.id.typeSelectLayout);
 
+        floatingActionButton.hide();    //Because we have yet to select from the spinners
+        dbSwitch.setChecked(true);      //Because DBMain is visible
+
         setUiToggleListeners();
         setSpinnerListeners();
         setTypeSelectListeners();
-
-        floatingActionButton.hide();    //Because we have yet to select from the spinners
-        dbSwitch.setChecked(true);      //Because DBMain is visible
 
         carQueryAPI(YEAR);
 
@@ -351,14 +354,7 @@ public class AddVehicleActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                if(typeSelectLayout.getVisibility() == View.GONE)
-                {
-                    typeSelectLayout.setVisibility(View.VISIBLE);
-                }
-                else if(typeSelectLayout.getVisibility() == View.VISIBLE)
-                {
-                    typeSelectLayout.setVisibility(View.GONE);
-                }
+                toggleVisibility(typeSelectLayout);
             }
         });
 
