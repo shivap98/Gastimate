@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import static com.shiv.gastimate.Helper.CAR;
 import static com.shiv.gastimate.Helper.MOTORCYCLE;
 import static com.shiv.gastimate.Helper.NOT_TRACKING;
 import static com.shiv.gastimate.Helper.OTHER;
+import static com.shiv.gastimate.Helper.toggleVisibility;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton mainButton;
     TextView editModeDisplay;
-
     /**
      * Called when activity is created
      *
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity
         {
             readVehicles();
         }
-        if(fabOpen || editMode)
+        if(fabOpen)
         {
             mainButton.callOnClick();
         }

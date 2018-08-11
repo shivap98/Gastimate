@@ -63,7 +63,6 @@ public class EditVehicle extends AppCompatActivity
     void setButtons()
     {
         FloatingActionButton saveButton = findViewById(R.id.saveButton);
-
         saveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -76,25 +75,41 @@ public class EditVehicle extends AppCompatActivity
                         NOT_TRACKING, 0, type);
                 Log.i("Vehicle Created", v.toString());
 
-                try
-                {
-                    //Updating the data in SQL
-                    SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                    String values = "name = '" + v.name + "', make = '" + v.make + "', model = '" + v.model
-                            + "', year = '" + v.year + "', mpg = '" + v.mpg + "', capacity = '" + v.capacity
-                            + "', trackingGas = '" + v.trackingGas + "', currGas = '" + v.currGas + "', type = '" + v.type + "'";
-                    String query = "UPDATE vehicles SET " + values + " WHERE name='" + oldName + "'";
-                    Log.i("Vehicle Edit Query", query);
-                    vehicleDB.execSQL(query);
-                    vehicleDB.close();
-                    Log.i("Vehicle Updated", "");
-                    MainActivity.dbChanged = true;
-                    finish();
-                }
-                catch(Exception e)
-                {
-                    Log.e("Vehicle Update Failed", e.getMessage());
-                }
+                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                String values = "name = '" + v.name + "', make = '" + v.make + "', model = '" + v.model
+                        + "', year = '" + v.year + "', mpg = '" + v.mpg + "', capacity = '" + v.capacity
+                        + "', trackingGas = '" + v.trackingGas + "', currGas = '" + v.currGas + "', type = '" + v.type + "'";
+                String query = "UPDATE vehicles SET " + values + " WHERE name='" + oldName + "'";
+                Log.i("Vehicle Edit Query", query);
+                vehicleDB.execSQL(query);
+                vehicleDB.close();
+                Log.i("Vehicle Updated", "");
+                MainActivity.dbChanged = true;
+                onBackPressed();
+            }
+        });
+
+        FloatingActionButton deleteButton = findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                //TODO: Show confirmation prompt
+                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                String query = "DELETE FROM vehicles WHERE name='" + oldName + "'";
+                Log.i("Vehicle Delete Query", query);
+                vehicleDB.execSQL(query);
+                /*
+                IMPORTANT: The above command removes the row but leaves empty space instead of it
+                It doesn't reorganise the whole list, so we have to call the vacuum function in sqlite
+                which removes all this extra useless space
+                 */
+                vehicleDB.execSQL("VACUUM");
+                vehicleDB.close();
+                Log.i("Vehicle Deleted", "");
+                MainActivity.dbChanged = true;
+                onBackPressed();
             }
         });
 
