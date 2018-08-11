@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton mainButton;
     TextView editModeDisplay;
+
     /**
      * Called when activity is created
      *
@@ -186,6 +187,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        finish();
+        if(fabOpen || editMode)
+        {
+            mainButton.callOnClick();
+        }
+        else
+        {
+            finish();
+        }
     }
 }
