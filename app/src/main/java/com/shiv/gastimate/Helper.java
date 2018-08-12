@@ -9,11 +9,15 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,16 +87,17 @@ public class Helper
     }
 
     /**
+     * Shows prompt with an input field based on preferences
      *
-     * @param context, where the dialog is shown
-     * @param title, dialog title
-     * @param description, dialog description
-     * @param hint, input text hint
-     * @param cancelable, doh
-     * @param numberInput, doh
-     * @param callBack, object with the function to be called after hitting ok
+     * @param context,        where the dialog is shown
+     * @param title,          dialog title
+     * @param description,    dialog description
+     * @param hint,           input text hint
+     * @param cancelable,     doh
+     * @param numberInput,    doh
+     * @param stringCallBack, object with the function to be called after hitting ok
      */
-    public static void showInputPrompt(Context context, String title, String description, String hint, boolean cancelable, boolean numberInput, final CallBack callBack)
+    public static void showInputPrompt(Context context, String title, String description, String hint, boolean cancelable, boolean numberInput, final StringCallBack stringCallBack)
     {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View promptsView = layoutInflater.inflate(R.layout.input_prompt, null);
@@ -112,9 +117,12 @@ public class Helper
         input.setHint(hint);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        if(title != null)
+        {
+            alertDialogBuilder.setTitle(title);
+        }
         alertDialogBuilder
                 .setView(promptsView)
-                .setTitle(title)
                 .setMessage(description)
                 .setCancelable(cancelable)
                 .setPositiveButton("OK",
@@ -122,7 +130,7 @@ public class Helper
                         {
                             public void onClick(DialogInterface dialog, int id)
                             {
-                                callBack.execute(input.getText().toString());
+                                stringCallBack.execute(input.getText().toString());
                             }
                         });
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -130,30 +138,92 @@ public class Helper
     }
 
     /**
-     * Shows dialog with simple title and message
-     * @param context, where th dialog is displayed
-     * @param title, title of dialog
-     * @param message, message of dialog
+     * Shows a yes/no prompt based on preferences
+     *
+     * @param context,         where the dialog is shown
+     * @param title,           dialog title
+     * @param description,     dialog description
+     * @param cancelable,      doh
+     * @param booleanCallBack, object with the function to be called after pressing the buttons
      */
-    public static void showPrompt(Context context, String title, String message)
+    public static void showConfirmationPrompt(Context context, String title, String description, boolean cancelable, final BooleanCallBack booleanCallBack)
     {
-        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setTitle(title);
-        alert.setMessage(message);
-        alert.setPositiveButton("Ok", null);
-        alert.show();
+        //Creating alert dialog
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        if(title != null)
+        {
+            alertDialogBuilder.setTitle(title);
+        }
+        alertDialogBuilder.setMessage(description);
+        alertDialogBuilder.setCancelable(cancelable);
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                booleanCallBack.execute(true);
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                booleanCallBack.execute(false);
+            }
+        });
+        if(cancelable)
+        {
+            alertDialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener()
+            {
+                @Override
+                public void onCancel(DialogInterface dialogInterface)
+                {
+                    booleanCallBack.execute(false);
+                }
+            });
+        }
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     /**
-     * Interface so that object with function can be sent as parameter
+     * Shows dialog with simple title and message
+     *
+     * @param context, where th dialog is displayed
+     * @param title,   title of dialog
+     * @param message, message of dialog
      */
-    public interface CallBack
+    public static void showPrompt(Context context, String title, String message, boolean cancelable, final VoidCallBack voidCallBack)
     {
-        void execute(String answer);
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        if(title != null)
+        {
+            alert.setTitle(title);
+        }
+        alert.setMessage(message);
+        alert.setCancelable(cancelable);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                if(voidCallBack != null)
+                {
+                    voidCallBack.execute();
+                }
+            }
+        });
+        try
+        {
+            alert.show();
+        }
+        catch(WindowManager.BadTokenException e)    //Called when Gastimate activity is closed
+        {
+        }
     }
 
     /**
      * Toggles visibility
+     *
      * @param view, view whose visibility needs to be toggled
      */
     public static void toggleVisibility(View view)
@@ -166,5 +236,29 @@ public class Helper
         {
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * Interface so that object with function can be sent as parameter
+     */
+    public interface VoidCallBack
+    {
+        void execute();
+    }
+
+    /**
+     * Interface for string so that object with function can be sent as parameter
+     */
+    public interface StringCallBack
+    {
+        void execute(String answer);
+    }
+
+    /**
+     * Interface for boolean so that object with function can be sent as parameter
+     */
+    public interface BooleanCallBack
+    {
+        void execute(boolean confirm);
     }
 }

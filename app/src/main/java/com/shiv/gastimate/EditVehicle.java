@@ -5,6 +5,7 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import static com.shiv.gastimate.Helper.NOT_TRACKING;
+import static com.shiv.gastimate.Helper.showConfirmationPrompt;
+import static com.shiv.gastimate.Helper.showPrompt;
 import static com.shiv.gastimate.Helper.toggleVisibility;
 
 public class EditVehicle extends AppCompatActivity
@@ -68,24 +71,35 @@ public class EditVehicle extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                //TODO: Show confirmation popup
-                Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
-                        modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
-                        Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
-                        NOT_TRACKING, 0, type);
-                Log.i("Vehicle Created", v.toString());
+                showConfirmationPrompt(EditVehicle.this, null,
+                        "Overwrite current vehicle with new data?", false, new Helper.BooleanCallBack()
+                        {
+                            @Override
+                            public void execute(boolean confirm)
+                            {
+                                if(confirm)
+                                {
+                                    Vehicle v = new Vehicle(nameInput.getText().toString(), makeInput.getText().toString(),
+                                            modelInput.getText().toString(), Integer.parseInt(yearInput.getText().toString()),
+                                            Double.parseDouble(mpgInput.getText().toString()), Double.parseDouble(capacityInput.getText().toString()),
+                                            NOT_TRACKING, 0, type);
+                                    Log.i("Vehicle Created", v.toString());
 
-                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                String values = "name = '" + v.name + "', make = '" + v.make + "', model = '" + v.model
-                        + "', year = '" + v.year + "', mpg = '" + v.mpg + "', capacity = '" + v.capacity
-                        + "', trackingGas = '" + v.trackingGas + "', currGas = '" + v.currGas + "', type = '" + v.type + "'";
-                String query = "UPDATE vehicles SET " + values + " WHERE name='" + oldName + "'";
-                Log.i("Vehicle Edit Query", query);
-                vehicleDB.execSQL(query);
-                vehicleDB.close();
-                Log.i("Vehicle Updated", "");
-                MainActivity.dbChanged = true;
-                onBackPressed();
+                                    SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                                    String values = "name = '" + v.name + "', make = '" + v.make + "', model = '" + v.model
+                                            + "', year = '" + v.year + "', mpg = '" + v.mpg + "', capacity = '" + v.capacity
+                                            + "', trackingGas = '" + v.trackingGas + "', currGas = '" + v.currGas + "', type = '" + v.type + "'";
+                                    String query = "UPDATE vehicles SET " + values + " WHERE name='" + oldName + "'";
+                                    Log.i("Vehicle Edit Query", query);
+                                    vehicleDB.execSQL(query);
+                                    vehicleDB.close();
+                                    Log.i("Vehicle Updated", "");
+
+                                    MainActivity.dbChanged = true;
+                                    onBackPressed();
+                                }
+                            }
+                        });
             }
         });
 
@@ -95,21 +109,31 @@ public class EditVehicle extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                //TODO: Show confirmation prompt
-                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                String query = "DELETE FROM vehicles WHERE name='" + oldName + "'";
-                Log.i("Vehicle Delete Query", query);
-                vehicleDB.execSQL(query);
-                /*
-                IMPORTANT: The above command removes the row but leaves empty space instead of it
-                It doesn't reorganise the whole list, so we have to call the vacuum function in sqlite
-                which removes all this extra useless space
-                 */
-                vehicleDB.execSQL("VACUUM");
-                vehicleDB.close();
-                Log.i("Vehicle Deleted", "");
-                MainActivity.dbChanged = true;
-                onBackPressed();
+                showConfirmationPrompt(EditVehicle.this, null, "Delete current vehicle?", false, new Helper.BooleanCallBack()
+                {
+                    @Override
+                    public void execute(boolean confirm)
+                    {
+                        if(confirm)
+                        {
+                            SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                            String query = "DELETE FROM vehicles WHERE name='" + oldName + "'";
+                            Log.i("Vehicle Delete Query", query);
+                            vehicleDB.execSQL(query);
+                                    /*
+                                    IMPORTANT: The above command removes the row but leaves empty space instead of it
+                                    It doesn't reorganise the whole list, so we have to call the vacuum function in sqlite
+                                    which removes all this extra useless space
+                                     */
+                            vehicleDB.execSQL("VACUUM");
+                            vehicleDB.close();
+                            Log.i("Vehicle Deleted", "");
+
+                            MainActivity.dbChanged = true;
+                            onBackPressed();
+                        }
+                    }
+                });
             }
         });
 

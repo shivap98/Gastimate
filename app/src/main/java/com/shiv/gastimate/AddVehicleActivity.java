@@ -5,8 +5,6 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
@@ -45,8 +43,10 @@ import static com.shiv.gastimate.Helper.NOT_TRACKING;
 import static com.shiv.gastimate.Helper.TRIM;
 import static com.shiv.gastimate.Helper.YEAR;
 import static com.shiv.gastimate.Helper.isEditTextEmpty;
+import static com.shiv.gastimate.Helper.showConfirmationPrompt;
 import static com.shiv.gastimate.Helper.showPrompt;
 import static com.shiv.gastimate.Helper.toggleVisibility;
+import static com.shiv.gastimate.Helper.BooleanCallBack;
 
 //TODO: Add loading bar for spinner loading
 
@@ -611,14 +611,14 @@ public class AddVehicleActivity extends AppCompatActivity
         if(isEditTextEmpty(nameInput) || isEditTextEmpty(makeInput) || isEditTextEmpty(modelInput)
                 || isEditTextEmpty(yearInput) || isEditTextEmpty(mpgInput) || isEditTextEmpty(capacityInput))
         {
-            showPrompt(AddVehicleActivity.this, "Fields not set!", "One or more fields are empty!\nPlease fill them.");
+            showPrompt(AddVehicleActivity.this, "Fields not set!", "One or more fields are empty!\nPlease fill them.", true, null);
         }
         else
         {
             if(Double.parseDouble(mpgInput.getText().toString()) == 0.0)
             {
                 showPrompt(AddVehicleActivity.this, "MPG is is zero", "If you set the MPG as 0, the app can't track the " +
-                        "gas needed for any trip where this vehicle is used.\nPlease set the MPG value manually.");
+                        "gas needed for any trip where this vehicle is used.\nPlease set the MPG value manually.", false, null);
             }
             else
             {
@@ -628,47 +628,40 @@ public class AddVehicleActivity extends AppCompatActivity
                         NOT_TRACKING, 0, type);
                 Log.i("VehicleC Created", v.toString());
 
-                //Creating alert dialog
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage("Add Vehicle?");
-                alertDialogBuilder.setCancelable(false);
-                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                showConfirmationPrompt(AddVehicleActivity.this, null, "Add Vehicle?", false, new BooleanCallBack()
                 {
-                    public void onClick(DialogInterface dialog, int id)
+                    @Override
+                    public void execute(boolean confirm)
                     {
-                        try
+                        if(confirm)
                         {
-                            //Adding object to SQL
-                            SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                            vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
-                                    "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
-                            //Setting up string values to add to the table
-                            String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
-                                    + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
-                            String query = "INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values;
-                            Log.i("Vehicle Add Query", query);
-                            vehicleDB.execSQL(query);
-                            vehicleDB.close();
+                            try
+                            {
+                                //Adding object to SQL
+                                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
+                                vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
+                                        "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
+                                //Setting up string values to add to the table
+                                String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
+                                        + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
+                                String query = "INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values;
+                                Log.i("Vehicle Add Query", query);
+                                vehicleDB.execSQL(query);
+                                vehicleDB.close();
 
-                            Log.i("VehicleC", "Added to DB");
-                            MainActivity.dbChanged = true;
-                        }
-                        catch(SQLiteConstraintException e)
-                        {
-                            Log.e("VehicleC SQL", e.getMessage());
-                            showPrompt(AddVehicleActivity.this, "Name already exists!", "Please change the name of the vehicle\n"
-                                    + e.getMessage());
+                                Log.i("VehicleC", "Added to DB");
+                                MainActivity.dbChanged = true;
+                                onBackPressed();
+                            }
+                            catch(SQLiteConstraintException e)
+                            {
+                                Log.e("VehicleC SQL", e.getMessage());
+                                showPrompt(AddVehicleActivity.this, "Name already exists!",
+                                        "Please change the name of the vehicle", false, null);
+                            }
                         }
                     }
                 });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
             }
         }
     }

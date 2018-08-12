@@ -5,8 +5,6 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
@@ -34,8 +32,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.shiv.gastimate.Helper.animateTextView;
+import static com.shiv.gastimate.Helper.showPrompt;
 import static com.shiv.gastimate.LocationActivity.currentFromLatLng;
 import static com.shiv.gastimate.LocationActivity.currentToLatLng;
+import static com.shiv.gastimate.Helper.VoidCallBack;
 
 public class Gastimate extends AppCompatActivity
 {
@@ -225,27 +225,18 @@ public class Gastimate extends AppCompatActivity
      */
     void notDrivable()
     {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Error getting the driving distance!");
-        alertDialogBuilder.setMessage("There is no driving path available for the given locations.\nPlease go back and try again.");
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNeutralButton("Ok", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
-                Intent intent = new Intent(Gastimate.this, LocationActivity.class);
-                //Clearing the back stack after LocationActivity, this still allows it to go back to the MainActivity
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        try
-        {
-            alertDialog.show();
-        }
-        catch(WindowManager.BadTokenException e){}        //Called when Gastimate activity is closed
+        showPrompt(Gastimate.this, "Error getting the driving distance!",
+                "There is no driving path available for the given locations.\nPlease go back and try again.", false, new VoidCallBack()
+                {
+                    @Override
+                    public void execute()
+                    {
+                        Intent intent = new Intent(Gastimate.this, LocationActivity.class);
+                        //Clearing the back stack after LocationActivity, this still allows it to go back to the MainActivity
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                    }
+                });
     }
 
     /**
