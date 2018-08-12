@@ -6,20 +6,19 @@ package com.shiv.gastimate;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import com.shiv.gastimate.Helper.VoidCallBack;
+
+import static com.shiv.gastimate.Vehicle.readDB;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton mainButton;
     TextView editModeDisplay;
+
     /**
      * Called when activity is created
      *
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        vehiclesList = findViewById(R.id.vehiclesList);
 
         onListClick = new VoidCallBack()
         {
@@ -68,7 +70,6 @@ public class MainActivity extends AppCompatActivity
         vehicles = new ArrayList<>();
         readVehicles();
 
-        vehiclesList = findViewById(R.id.vehiclesList);
         vehiclesList.setLayoutManager(new LinearLayoutManager(this));
         vehiclesList.setAdapter(new VehicleListAdapter(vehicles, onListClick));
 
@@ -83,32 +84,11 @@ public class MainActivity extends AppCompatActivity
     void readVehicles()
     {
         vehicles.clear();
-        //In try catch because when database doesn't exist, app crashes
-        try
-        {
-            //Getting all the vehicles from database list
-            SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-            //Adding the vehicles to ArrayList by moving cursor through them all
-            Cursor cursor = vehicleDB.rawQuery("SELECT name, make, model, year, mpg, capacity, trackingGas, currGas, type FROM vehicles", null);
-            while(cursor.moveToNext())
-            {
-                Vehicle v = new Vehicle(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3),
-                        cursor.getDouble(4), cursor.getDouble(5), cursor.getInt(6), cursor.getDouble(7), cursor.getInt(8));
 
-                Log.i("Reading Vehicle", v.toString());
-                vehicles.add(v);
-            }
-            cursor.close();
-            vehicleDB.close();
+        readDB(MainActivity.this);
 
-            vehiclesList.setAdapter(null);
-            vehiclesList.setAdapter(new VehicleListAdapter(vehicles, onListClick));
-        }
-        catch(Exception e)
-        {
-            Log.e("Reading DB", e.getMessage());
-            return;
-        }
+        vehiclesList.setAdapter(null);
+        vehiclesList.setAdapter(new VehicleListAdapter(vehicles, onListClick));
 
         dbChanged = false;
     }

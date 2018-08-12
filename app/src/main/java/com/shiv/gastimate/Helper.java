@@ -42,10 +42,18 @@ public class Helper
     static final int animationDuration = 1170;
 
     //used for carQuery type
-    public static int YEAR = 0;
-    public static int MAKE = 1;
-    public static int MODEL = 2;
-    public static int TRIM = 3;
+    public static final int YEAR = 0;
+    public static final int MAKE = 1;
+    public static final int MODEL = 2;
+    public static final int TRIM = 3;
+
+    /**
+     * Private to prevent instantiation
+     * This is a class used throughout the app and provides various utilities
+     */
+    private Helper()
+    {
+    }
 
     /**
      * Animates the given TextView

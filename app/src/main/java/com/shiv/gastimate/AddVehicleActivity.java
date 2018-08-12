@@ -5,14 +5,11 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,6 +44,7 @@ import static com.shiv.gastimate.Helper.showConfirmationPrompt;
 import static com.shiv.gastimate.Helper.showPrompt;
 import static com.shiv.gastimate.Helper.toggleVisibility;
 import static com.shiv.gastimate.Helper.BooleanCallBack;
+import static com.shiv.gastimate.Vehicle.addVehicle;
 
 //TODO: Add loading bar for spinner loading
 
@@ -635,30 +633,19 @@ public class AddVehicleActivity extends AppCompatActivity
                     {
                         if(confirm)
                         {
-                            try
-                            {
-                                //Adding object to SQL
-                                SQLiteDatabase vehicleDB = openOrCreateDatabase("vehicleDB.db", MODE_PRIVATE, null);
-                                vehicleDB.execSQL("CREATE TABLE IF NOT EXISTS vehicles (name VARCHAR(80) PRIMARY KEY, make VARCHAR(80), model VARCHAR(80)," +
-                                        "year INT, mpg REAL, capacity REAL, trackingGas INT, currGas REAL, type INT)");
-                                //Setting up string values to add to the table
-                                String values = " ('" + v.name + "', '" + v.make + "', '" + v.model + "', '" + v.year + "', '" + v.mpg
-                                        + "', '" + v.capacity + "', '" + v.trackingGas + "', '" + v.currGas + "', '" + v.type + "')";
-                                String query = "INSERT INTO vehicles (name, make, model, year, mpg, capacity, trackingGas, currGas, type) VALUES" + values;
-                                Log.i("Vehicle Add Query", query);
-                                vehicleDB.execSQL(query);
-                                vehicleDB.close();
 
-                                Log.i("VehicleC", "Added to DB");
-                                MainActivity.dbChanged = true;
-                                onBackPressed();
-                            }
-                            catch(SQLiteConstraintException e)
+                            addVehicle(AddVehicleActivity.this, v, new BooleanCallBack()
                             {
-                                Log.e("VehicleC SQL", e.getMessage());
-                                showPrompt(AddVehicleActivity.this, "Name already exists!",
-                                        "Please change the name of the vehicle", false, null);
-                            }
+                                @Override
+                                public void execute(boolean added)
+                                {
+                                    if(added)
+                                    {
+                                        MainActivity.dbChanged = true;
+                                        onBackPressed();
+                                    }
+                                }
+                            });
                         }
                     }
                 });
