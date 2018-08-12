@@ -19,12 +19,16 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.shiv.gastimate.Helper.VoidCallBack;
+
 public class MainActivity extends AppCompatActivity
 {
     RecyclerView vehiclesList;
 
     public static ArrayList<Vehicle> vehicles;
     public static Vehicle currentVehicle;
+
+    VoidCallBack onListClick;
 
     public static boolean editMode = false;
     public static boolean dbChanged;    //true if list needs to be refreshed
@@ -43,12 +47,30 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        onListClick = new VoidCallBack()
+        {
+            @Override
+            public void execute()
+            {
+                Intent intent;
+                if(!editMode)
+                {
+                    intent = new Intent(MainActivity.this, LocationActivity.class);
+                }
+                else
+                {
+                    intent = new Intent(MainActivity.this, EditVehicle.class);
+                }
+                startActivity(intent);
+            }
+        };
+
         vehicles = new ArrayList<>();
         readVehicles();
 
         vehiclesList = findViewById(R.id.vehiclesList);
         vehiclesList.setLayoutManager(new LinearLayoutManager(this));
-        vehiclesList.setAdapter(new VehicleListAdapter(vehicles));
+        vehiclesList.setAdapter(new VehicleListAdapter(vehicles, onListClick));
 
         setFabListeners();
 
@@ -80,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             vehicleDB.close();
 
             vehiclesList.setAdapter(null);
-            vehiclesList.setAdapter(new VehicleListAdapter(vehicles));
+            vehiclesList.setAdapter(new VehicleListAdapter(vehicles, onListClick));
         }
         catch(Exception e)
         {

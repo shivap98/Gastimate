@@ -5,7 +5,6 @@ package com.shiv.gastimate;
  */
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +18,13 @@ import java.util.ArrayList;
 
 import static com.shiv.gastimate.Helper.MOTORCYCLE;
 import static com.shiv.gastimate.Helper.OTHER;
+import com.shiv.gastimate.Helper.VoidCallBack;
 
 public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    ArrayList<Vehicle> vehicles = new ArrayList<>();
-    ArrayList<Vehicle> vehiclesBackup = new ArrayList<>();
+    private ArrayList<Vehicle> vehicles = new ArrayList<>();
+    private ArrayList<Vehicle> vehiclesBackup = new ArrayList<>();
+    private VoidCallBack voidCallBack;
 
     /**
      * Helper class which assigns all the views within the list object
@@ -64,16 +65,8 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     break;
                 }
             }
-            Intent intent;
-            if(!MainActivity.editMode)
-            {
-                intent = new Intent(view.getContext(), LocationActivity.class);
-            }
-            else
-            {
-                intent = new Intent(view.getContext(), EditVehicle.class);
-            }
-            view.getContext().startActivity(intent);
+
+            voidCallBack.execute();
         }
     }
 
@@ -133,9 +126,10 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
      * Constructor which sets the ArrayList
      * @param vehicles, ArrayList of the vehicles
      */
-    public VehicleListAdapter(ArrayList<Vehicle> vehicles)
+    public VehicleListAdapter(ArrayList<Vehicle> vehicles, VoidCallBack voidCallBack)
     {
         this.vehicles.addAll(vehicles);
         this.vehiclesBackup.addAll(vehicles);
+        this.voidCallBack = voidCallBack;
     }
 }
