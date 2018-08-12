@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,12 +18,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import static com.shiv.gastimate.Helper.CAR;
-import static com.shiv.gastimate.Helper.MOTORCYCLE;
-import static com.shiv.gastimate.Helper.NOT_TRACKING;
-import static com.shiv.gastimate.Helper.OTHER;
-import static com.shiv.gastimate.Helper.toggleVisibility;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -121,7 +113,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                mainButton.callOnClick();       //collapses the mainButton
+                //close the mainButton first
+                fabOpen = false;
+                addButton.hide();
+                editButton.hide();
+                mainButton.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
+
                 editMode = true;
                 mainButton.setImageResource(R.drawable.ic_close);
                 editModeDisplay.setVisibility(View.VISIBLE);
@@ -140,7 +137,7 @@ public class MainActivity extends AppCompatActivity
                 if(editMode)
                 {
                     editMode = false;
-                    mainButton.setImageResource(R.drawable.ic_unfold);
+                    mainButton.setImageResource(R.drawable.ic_unfold_open);
                     editModeDisplay.setVisibility(View.GONE);
                 }
                 else
@@ -151,6 +148,7 @@ public class MainActivity extends AppCompatActivity
                         addButton.hide();
                         editButton.hide();
                         mainButton.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorAccent)));
+                        mainButton.setImageResource(R.drawable.ic_unfold_open);
                     }
                     else
                     {
@@ -158,6 +156,7 @@ public class MainActivity extends AppCompatActivity
                         addButton.show();
                         editButton.show();
                         mainButton.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorAccentDark)));
+                        mainButton.setImageResource(R.drawable.ic_unfold_close);
                     }
                 }
             }

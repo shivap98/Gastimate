@@ -59,7 +59,7 @@
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/ic_unfold"
+        android:src="@drawable/ic_unfold_open"
         android:tint="@color/white"
         app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
